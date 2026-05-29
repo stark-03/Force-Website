@@ -39,8 +39,7 @@ export const revealFromBottom = {
 
 export const wobble = {
   animate: {
-    y: [0, -6, 0, 4, 0],
-    rotate: [0, 1.5, -1, 0.5, 0],
-    transition: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
+    x: [0, 3, 0, -3, 0],
+    transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' }
   }
 };
