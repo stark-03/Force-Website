@@ -1,0 +1,46 @@
+export const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+};
+
+export const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5 } }
+};
+
+export const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12 } }
+};
+
+export const slideInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+};
+
+export const slideInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+};
+
+export const scaleUp = {
+  hidden: { opacity: 0, scale: 0.92 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+};
+
+export const revealFromBottom = {
+  hidden: { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
+  visible: {
+    clipPath: 'inset(0% 0% 0% 0%)',
+    opacity: 1,
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+export const wobble = {
+  animate: {
+    y: [0, -6, 0, 4, 0],
+    rotate: [0, 1.5, -1, 0.5, 0],
+    transition: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
+  }
+};
