@@ -421,10 +421,10 @@ function ForMyChild() {
 
 // ─── Section 5: Student Testimonials ─────────────────────────────────────────
 const students = [
-  { name: 'Pravartika', src: '/Pravartika-Testimonial.mp4' },
-  { name: 'Megh',       src: '/Megh-Testimonial.mp4' },
-  { name: 'Tanishka',   src: '/Tanishka-Testimonial.mp4' },
-  { name: 'Risha',      src: '/Risha-Testimonial.mp4' },
+  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074882/Pravartika-Testimonial_k3k9zm.mp4' },
+  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074919/Megh-Testimonial_p17cfy.mp4' },
+  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074911/Tanishka-Testimonial_wg7zbz.mp4' },
+  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074881/Risha-Testimonial_tvbxxh.mp4' },
 ];
 
 function VideoSlide({ name, src, onPlayingChange }) {
