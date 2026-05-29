@@ -85,10 +85,10 @@ export default function Footer() {
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {legalLinks.map(l => (
-                <a key={l} href="#" style={{ fontSize: 13, opacity: 0.75, transition: 'opacity 0.2s', lineHeight: 1.4 }}
+                <button key={l} style={{ fontSize: 13, opacity: 0.75, transition: 'opacity 0.2s', lineHeight: 1.4, background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', textAlign: 'left', padding: 0, fontFamily: 'inherit' }}
                   onMouseEnter={e => e.currentTarget.style.opacity = 1}
                   onMouseLeave={e => e.currentTarget.style.opacity = 0.75}
-                >{l}</a>
+                >{l}</button>
               ))}
             </div>
           </div>
