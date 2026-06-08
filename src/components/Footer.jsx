@@ -13,22 +13,23 @@ const SocialIcon = ({ href, label, children }) => (
 
 export default function Footer() {
   const legalLinks = [
-    'Terms & Conditions',
-    'Privacy Policy',
-    'Program Participation Agreement',
-    'Student Conduct & Community Policy',
-    'Child Safety & Minor Protection Policy',
+    { label: 'Terms & Conditions',                     to: '/legal/terms' },
+    { label: 'Privacy Policy',                         to: '/legal/privacy' },
+    { label: 'Refund Policy',                          to: '/legal/refund' },
+    { label: 'Program Participation Agreement',        to: '/legal/participation' },
+    { label: 'Student Conduct & Community Policy',     to: '/legal/conduct' },
+    { label: 'Child Safety & Minor Protection Policy', to: '/legal/child-safety' },
   ];
 
   return (
-    <footer style={{ background: 'var(--coral)', color: 'var(--white)', paddingTop: 64, paddingBottom: 0 }}>
+    <footer style={{ background: 'var(--navy)', color: 'var(--white)', paddingTop: 64, paddingBottom: 0 }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 48, paddingBottom: 48 }} className="footer-grid">
           {/* Col 1 — Brand */}
           <div>
             <img src={logo} alt="FORCE Scholar" style={{ height: 88, width: 'auto', marginBottom: 12, filter: 'brightness(0) invert(1)' }} />
             <p style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.9, marginBottom: 12 }}>
-              Career Development Lab for high-school students.
+              Career Exploration Lab for high-school students.
             </p>
             <a href="mailto:hello@forcescholar.com" style={{ fontSize: 14, opacity: 0.85, textDecoration: 'underline' }}>
               hello@forcescholar.com
@@ -58,10 +59,10 @@ export default function Footer() {
               Community
             </h4>
             <a
-              href="https://wa.me/918660274897?text=I%20need%20to%20know%20more%20about%20FORCE%20Scholar"
+              href="https://wa.me/918660274897?text=I%20want%20to%20identify%20my%20child's%20interests%20and%20strengths"
               target="_blank"
               rel="noreferrer"
-              style={{ display: 'inline-block', background: 'rgba(255,255,255,0.2)', color: 'var(--white)', padding: '10px 18px', borderRadius: 5, fontSize: 14, fontWeight: 600, marginBottom: 24, fontFamily: 'Barlow, sans-serif' }}
+              style={{ display: 'inline-block', background: 'var(--teal)', color: 'var(--white)', padding: '10px 18px', borderRadius: 5, fontSize: 14, fontWeight: 600, marginBottom: 24, fontFamily: 'Barlow, sans-serif' }}
             >
               Join 500+ FORCE Parents on WhatsApp
             </a>
@@ -84,18 +85,19 @@ export default function Footer() {
               Legal
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {legalLinks.map(l => (
-                <button key={l} style={{ fontSize: 13, opacity: 0.75, transition: 'opacity 0.2s', lineHeight: 1.4, background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', textAlign: 'left', padding: 0, fontFamily: 'inherit' }}
+              {legalLinks.map(({ label, to }) => (
+                <Link key={to} to={to}
+                  style={{ fontSize: 13, opacity: 0.75, transition: 'opacity 0.2s', lineHeight: 1.4, color: 'inherit' }}
                   onMouseEnter={e => e.currentTarget.style.opacity = 1}
                   onMouseLeave={e => e.currentTarget.style.opacity = 0.75}
-                >{l}</button>
+                >{label}</Link>
               ))}
             </div>
           </div>
         </div>
 
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', padding: '20px 0', textAlign: 'center' }}>
-          <p style={{ fontSize: 13, opacity: 0.7 }}>© 2025 FORCE Scholar. All rights reserved.</p>
+          <p style={{ fontSize: 13, opacity: 0.7 }}>© 2026 FORCE Scholar. All rights reserved.</p>
         </div>
       </div>
 

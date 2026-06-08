@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=Dancing+Script:wght@700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,700&display=swap');
 
 :root {
-  --teal:    #4297A0;
-  --navy:    #2F5061;
-  --coral:   #E57F80;
-  --platinum:#F5F5F7;
-  --white:   #FFFFFF;
-  --black:   #1A1A1A;
+  --teal:       #4297A0;
+  --navy:       #2F5061;
+  --coral:      #E57F80;
+  --misty-blue: #4A7080;
+  --platinum:   #F5F5F7;
+  --white:      #FFFFFF;
+  --black:      #1A1A1A;
 
   --shadow-card:  0 4px 28px rgba(47, 80, 97, 0.09);
   --shadow-hover: 0 16px 56px rgba(47, 80, 97, 0.18);
@@ -89,21 +90,26 @@ button {
   font-family: 'Barlow', sans-serif;
   font-weight: 600;
   font-size: 16px;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: background 0.28s ease, color 0.28s ease, transform 0.22s ease, box-shadow 0.22s ease;
   will-change: transform;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn:hover {
-  opacity: 0.88;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(47, 80, 97, 0.22);
+  /* Pure Spikelabs-style color-swap — no lift, no shadow */
 }
 
-.btn-coral { background: var(--coral); color: var(--white); }
-.btn-teal  { background: var(--teal);  color: var(--white); }
-.btn-navy  { background: var(--navy);  color: var(--white); }
+/* All CTAs are teal; coral is an alias so legacy class names still work */
+.btn-coral { background: var(--teal); color: var(--white); }
+.btn-teal  { background: var(--teal); color: var(--white); }
+.btn-navy  { background: var(--navy); color: var(--white); }
+
+/* Spikelabs-style full color-swap on hover — coral (#E57F80) */
+.btn-coral:hover { background: var(--coral); color: var(--white); }
+.btn-teal:hover  { background: var(--coral); color: var(--white); }
+.btn-navy:hover  { background: var(--coral); color: var(--white); }
 
 @media (max-width: 768px) {
   .section { padding: 80px 0; }

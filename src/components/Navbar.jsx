@@ -2,6 +2,51 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/Logo.png';
+import { useOpenCalendly } from './CalendlyModal';
+
+// Individual nav link with animated underline — Spikelabs style
+function NavLinkItem({ to, label }) {
+  const [hovered, setHovered] = useState(false);
+  const location = useLocation();
+  const isActive = location.pathname === to;
+  const active = hovered || isActive;
+
+  return (
+    <div
+      style={{ position: 'relative', paddingBottom: 4 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <Link
+        to={to}
+        style={{
+          fontFamily: 'IBM Plex Sans, sans-serif',
+          fontWeight: 500,
+          fontSize: 15,
+          color: active ? 'var(--teal)' : 'var(--navy)',
+          transition: 'color 0.22s ease',
+          display: 'block',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {label}
+      </Link>
+      {/* Animated underline — scales from 0 to 1 on hover/active */}
+      <motion.div
+        animate={{ scaleX: active ? 1 : 0 }}
+        transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0,
+          height: 1.5,
+          background: 'var(--teal)',
+          borderRadius: 2,
+          transformOrigin: 'left center',
+        }}
+      />
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -9,8 +54,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
   const location = useLocation();
+  const openCalendly = useOpenCalendly();
 
-  // Close menu on route change or when navbar hides
   useEffect(() => setMenuOpen(false), [location]);
   useEffect(() => { if (hidden) setMenuOpen(false); }, [hidden]);
 
@@ -18,7 +63,6 @@ export default function Navbar() {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-      // Hide after 100px on scroll down; reveal immediately on scroll up
       if (y > lastScrollY.current && y > 100) {
         setHidden(true);
       } else if (y < lastScrollY.current) {
@@ -33,18 +77,13 @@ export default function Navbar() {
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Program', to: '/program' },
-    { label: 'Contact Us', to: '/contact' },
   ];
 
   return (
     <>
-      {/* Fixed nav — Framer Motion owns the y transform entirely */}
       <motion.nav
         initial={{ opacity: 0, y: -16 }}
-        animate={{
-          opacity: 1,
-          y: hidden ? '-100%' : 0,
-        }}
+        animate={{ opacity: 1, y: hidden ? '-100%' : 0 }}
         transition={{
           opacity: { duration: 0.4, ease: 'easeOut' },
           y: { duration: 0.34, ease: [0.4, 0, 0.2, 1] },
@@ -60,38 +99,29 @@ export default function Navbar() {
           willChange: 'transform',
         }}
       >
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 112 }}>
+        <div
+          className="container"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 112 }}
+        >
           {/* Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
             <img src={logo} alt="FORCE Scholar" style={{ height: 100, width: 'auto', display: 'block' }} />
           </Link>
 
-          {/* Desktop links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }} className="nav-desktop">
+          {/* Desktop links + CTA */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 40 }} className="nav-desktop">
             {links.map(l => (
-              <Link
-                key={l.to}
-                to={l.to}
-                style={{
-                  fontFamily: 'IBM Plex Sans, sans-serif',
-                  fontWeight: 500,
-                  fontSize: 15,
-                  color: location.pathname === l.to ? 'var(--teal)' : 'var(--navy)',
-                  transition: 'color 0.2s',
-                }}
-              >
-                {l.label}
-              </Link>
+              <NavLinkItem key={l.to} to={l.to} label={l.label} />
             ))}
-            <a
-              href="https://calendly.com/forcescholar/lets-connect"
-              target="_blank"
-              rel="noreferrer"
+
+            {/* Schedule a Call — pure color-swap, no lift */}
+            <button
+              onClick={openCalendly}
               className="btn btn-teal"
-              style={{ padding: '10px 20px', fontSize: 14 }}
+              style={{ padding: '10px 22px', fontSize: 14 }}
             >
               Schedule a Call
-            </a>
+            </button>
           </div>
 
           {/* Hamburger */}
@@ -122,20 +152,23 @@ export default function Navbar() {
                   <Link
                     key={l.to}
                     to={l.to}
-                    style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 16, color: 'var(--navy)', padding: '8px 0' }}
+                    style={{
+                      fontFamily: 'IBM Plex Sans, sans-serif',
+                      fontWeight: 500, fontSize: 16,
+                      color: location.pathname === l.to ? 'var(--teal)' : 'var(--navy)',
+                      padding: '8px 0',
+                    }}
                   >
                     {l.label}
                   </Link>
                 ))}
-                <a
-                  href="https://calendly.com/forcescholar/lets-connect"
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  onClick={() => { setMenuOpen(false); openCalendly(); }}
                   className="btn btn-teal"
                   style={{ alignSelf: 'flex-start', marginBottom: 8 }}
                 >
                   Schedule a Call
-                </a>
+                </button>
               </div>
             </motion.div>
           )}
@@ -149,7 +182,7 @@ export default function Navbar() {
         `}</style>
       </motion.nav>
 
-      {/* Spacer — reserves 112px so content doesn't hide under the fixed nav */}
+      {/* Spacer — reserves 112px so content starts below the fixed nav */}
       <div style={{ height: 112 }} />
     </>
   );

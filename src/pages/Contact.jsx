@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { fadeUp, staggerContainer, scaleUp } from '../utils/animations';
 
@@ -22,7 +22,25 @@ const IconMail = () => (
   </svg>
 );
 
-const grades = ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+const grades = ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11'];
+
+const countryCodes = [
+  { dial: '+91',  label: '🇮🇳 +91'  },
+  { dial: '+1',   label: '🇺🇸 +1'   },
+  { dial: '+44',  label: '🇬🇧 +44'  },
+  { dial: '+971', label: '🇦🇪 +971' },
+  { dial: '+974', label: '🇶🇦 +974' },
+  { dial: '+965', label: '🇰🇼 +965' },
+  { dial: '+966', label: '🇸🇦 +966' },
+  { dial: '+61',  label: '🇦🇺 +61'  },
+  { dial: '+65',  label: '🇸🇬 +65'  },
+  { dial: '+60',  label: '🇲🇾 +60'  },
+  { dial: '+64',  label: '🇳🇿 +64'  },
+  { dial: '+49',  label: '🇩🇪 +49'  },
+  { dial: '+33',  label: '🇫🇷 +33'  },
+  { dial: '+81',  label: '🇯🇵 +81'  },
+  { dial: '+82',  label: '🇰🇷 +82'  },
+];
 
 const contactMethods = [
   {
@@ -32,7 +50,7 @@ const contactMethods = [
     desc: 'Get quick answers to your questions. Our team typically responds within minutes during business hours.',
     detail: '+91 8660274897',
     cta: 'Open WhatsApp',
-    href: 'https://wa.me/918660274897?text=I%20need%20to%20know%20more%20about%20FORCE%20Scholar',
+    href: 'https://wa.me/918660274897?text=I%20want%20to%20identify%20my%20child%27s%20interests%20and%20strengths',
     accent: 'var(--teal)',
     accentBg: 'rgba(66,151,160,0.09)',
     btnClass: 'btn-teal',
@@ -45,9 +63,9 @@ const contactMethods = [
     detail: 'Free · 30 min · Online',
     cta: 'Book on Calendly',
     href: 'https://calendly.com/forcescholar/lets-connect',
-    accent: 'var(--coral)',
-    accentBg: 'rgba(229,127,128,0.09)',
-    btnClass: 'btn-coral',
+    accent: 'var(--teal)',
+    accentBg: 'rgba(66,151,160,0.09)',
+    btnClass: 'btn-teal',
   },
   {
     icon: <IconMail />,
@@ -64,14 +82,37 @@ const contactMethods = [
 ];
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', grade: '', message: '' });
+  const formRef = useRef(null);
+  const [form, setForm] = useState({
+    name: '', email: '', countryCode: '+91', phone: '', grade: '', message: '',
+  });
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    const msg = `I need to know more about FORCE Scholar.%0AName: ${form.name}%0AChild's Grade: ${form.grade}%0AMessage: ${form.message}`;
-    window.open(`https://wa.me/918660274897?text=${msg}`, '_blank');
+  const isValid = () => formRef.current && formRef.current.reportValidity();
+
+  const buildMessage = () => [
+    "Hello, I want to identify my child's interests and strengths.",
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    `Phone: ${form.countryCode} ${form.phone}`,
+    `Child's Grade: ${form.grade}`,
+    form.message ? `Message: ${form.message}` : null,
+  ].filter(Boolean).join('\n');
+
+  const handleWhatsApp = () => {
+    if (!isValid()) return;
+    window.open(
+      `https://wa.me/918660274897?text=${encodeURIComponent(buildMessage())}`,
+      '_blank'
+    );
+  };
+
+  const handleEmail = () => {
+    if (!isValid()) return;
+    const subject = encodeURIComponent('Enquiry — FORCE Scholar');
+    const body = encodeURIComponent(buildMessage());
+    window.open(`mailto:hello@forcescholar.com?subject=${subject}&body=${body}`, '_blank');
   };
 
   const inputBase = {
@@ -81,13 +122,15 @@ export default function Contact() {
     color: 'var(--navy)', background: 'var(--white)',
     outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s',
   };
+  const chevron = `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%232F5061' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/%3E%3C/svg%3E")`;
+  const selectStyle = { ...inputBase, cursor: 'pointer', appearance: 'none', backgroundImage: chevron, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center' };
 
   const onFocus = e => { e.target.style.borderColor = 'var(--teal)'; e.target.style.boxShadow = '0 0 0 3px rgba(66,151,160,0.12)'; };
   const onBlur  = e => { e.target.style.borderColor = 'rgba(47,80,97,0.14)'; e.target.style.boxShadow = 'none'; };
 
-  const label = (text, required, optional) => (
+  const Label = ({ text, required, optional }) => (
     <label style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 13, color: 'var(--navy)', marginBottom: 8, display: 'block', letterSpacing: '0.02em' }}>
-      {text}{required && <span style={{ color: 'var(--coral)', marginLeft: 3 }}>*</span>}
+      {text}{required && <span style={{ color: 'var(--teal)', marginLeft: 3 }}>*</span>}
       {optional && <span style={{ fontWeight: 400, color: 'rgba(47,80,97,0.45)', marginLeft: 6 }}>(optional)</span>}
     </label>
   );
@@ -114,7 +157,7 @@ export default function Contact() {
               lineHeight: 1.06, letterSpacing: '-0.025em', marginBottom: 24,
             }}>
               Let's talk about<br />
-              <span style={{ color: 'var(--coral)' }}>your child's future.</span>
+              <span style={{ color: 'var(--teal)' }}>your child's future.</span>
             </motion.h1>
             <motion.p variants={fadeUp} style={{
               fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 18,
@@ -136,45 +179,18 @@ export default function Contact() {
           >
             {contactMethods.map(m => (
               <motion.div
-                key={m.title}
-                variants={fadeUp}
+                key={m.title} variants={fadeUp}
                 whileHover={{ y: -8, boxShadow: '0 20px 60px rgba(47,80,97,0.14)' }}
                 transition={{ duration: 0.3 }}
-                style={{
-                  background: 'var(--white)', borderRadius: 5,
-                  borderTop: `3px solid ${m.accent}`,
-                  boxShadow: 'var(--shadow-card)',
-                  padding: '36px 32px 40px',
-                  display: 'flex', flexDirection: 'column',
-                }}
+                style={{ background: 'var(--white)', borderRadius: 5, borderTop: `3px solid ${m.accent}`, boxShadow: 'var(--shadow-card)', padding: '36px 32px 40px', display: 'flex', flexDirection: 'column' }}
               >
-                {/* Icon square */}
-                <div style={{
-                  width: 52, height: 52, borderRadius: 5,
-                  background: m.accentBg,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: m.accent, marginBottom: 20,
-                }}>{m.icon}</div>
-
-                {/* Tag */}
-                <p style={{
-                  fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-                  fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase',
-                  color: m.accent, marginBottom: 8,
-                }}>{m.tag}</p>
-
+                <div style={{ width: 52, height: 52, borderRadius: 5, background: m.accentBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: m.accent, marginBottom: 20 }}>{m.icon}</div>
+                <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: m.accent, marginBottom: 8 }}>{m.tag}</p>
                 <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22, color: 'var(--navy)', marginBottom: 12, lineHeight: 1.2 }}>{m.title}</h3>
                 <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'var(--black)', lineHeight: 1.72, marginBottom: 20, opacity: 0.8, flexGrow: 1 }}>{m.desc}</p>
-
-                {/* Detail pill */}
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center',
-                  background: m.accentBg, borderRadius: 5,
-                  padding: '6px 12px', marginBottom: 24, alignSelf: 'flex-start',
-                }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', background: m.accentBg, borderRadius: 5, padding: '6px 12px', marginBottom: 24, alignSelf: 'flex-start' }}>
                   <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 13, color: m.accent }}>{m.detail}</span>
                 </div>
-
                 <a href={m.href} target="_blank" rel="noreferrer" className={`btn ${m.btnClass}`} style={{ alignSelf: 'flex-start', fontSize: 14, padding: '11px 22px' }}>
                   {m.cta} →
                 </a>
@@ -195,38 +211,52 @@ export default function Contact() {
           </motion.div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={scaleUp}>
-            <form onSubmit={handleSubmit} style={{
-              background: 'var(--white)', borderRadius: 5,
-              padding: '48px',
-              boxShadow: 'var(--shadow-hover)',
-            }}>
+            {/* noValidate so we control validation via reportValidity() */}
+            <form ref={formRef} noValidate style={{ background: 'var(--white)', borderRadius: 5, padding: '48px', boxShadow: 'var(--shadow-hover)' }}>
+
               {/* Row 1 — Name + Email */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="form-row">
                 <div>
-                  {label('Your Name', true)}
+                  <Label text="Your Name" required />
                   <input name="name" value={form.name} onChange={handleChange} required placeholder="Enter your name" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
                 </div>
                 <div>
-                  {label('Email Address', true)}
+                  <Label text="Email Address" required />
                   <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="your@email.com" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
                 </div>
               </div>
 
-              {/* Row 2 — Phone + Grade */}
+              {/* Row 2 — Phone (with country code) + Grade */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="form-row">
                 <div>
-                  {label('Phone Number', false, true)}
-                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 xxxxx xxxxx" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
+                  <Label text="WhatsApp Number" required />
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    {/* Country code selector */}
+                    <select
+                      name="countryCode"
+                      value={form.countryCode}
+                      onChange={handleChange}
+                      style={{ ...selectStyle, width: 110, flexShrink: 0, padding: '14px 28px 14px 10px', fontSize: 14 }}
+                      onFocus={onFocus} onBlur={onBlur}
+                    >
+                      {countryCodes.map(c => (
+                        <option key={c.dial} value={c.dial}>{c.label}</option>
+                      ))}
+                    </select>
+                    {/* Number input */}
+                    <input
+                      name="phone" type="tel" required
+                      value={form.phone} onChange={handleChange}
+                      placeholder="xxxxx xxxxx"
+                      style={{ ...inputBase, flex: 1 }}
+                      onFocus={onFocus} onBlur={onBlur}
+                    />
+                  </div>
                 </div>
                 <div>
-                  {label("Child's Grade", true)}
+                  <Label text="Child's Grade" required />
                   <select name="grade" value={form.grade} onChange={handleChange} required
-                    style={{
-                      ...inputBase, cursor: 'pointer', appearance: 'none',
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%232F5061' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/%3E%3C/svg%3E")`,
-                      backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center',
-                    }}
-                    onFocus={onFocus} onBlur={onBlur}>
+                    style={selectStyle} onFocus={onFocus} onBlur={onBlur}>
                     <option value="">Select grade</option>
                     {grades.map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
@@ -235,19 +265,24 @@ export default function Contact() {
 
               {/* Message */}
               <div style={{ marginBottom: 32 }}>
-                {label('Your Message', false, true)}
+                <Label text="Your Message" optional />
                 <textarea name="message" value={form.message} onChange={handleChange} rows={5}
                   placeholder="Tell us about your child, their grade, and any specific questions you have..."
                   style={{ ...inputBase, resize: 'none', lineHeight: 1.65 }}
                   onFocus={onFocus} onBlur={onBlur} />
               </div>
 
-              {/* Divider */}
-              <div style={{ height: 1, background: 'rgba(47,80,97,0.08)', marginBottom: 28 }} />
+              <div style={{ height: 1, background: 'rgba(47,80,97,0.08)', marginBottom: 20 }} />
 
-              <button type="submit" className="btn btn-teal" style={{ width: '100%', justifyContent: 'center', fontSize: 16, padding: '16px' }}>
-                Send via WhatsApp →
-              </button>
+              {/* Two submit buttons */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }} className="form-row">
+                <button type="button" onClick={handleWhatsApp} className="btn btn-teal" style={{ justifyContent: 'center', fontSize: 15, padding: '15px 20px' }}>
+                  Send via WhatsApp →
+                </button>
+                <button type="button" onClick={handleEmail} className="btn btn-navy" style={{ justifyContent: 'center', fontSize: 15, padding: '15px 20px' }}>
+                  Send via Email →
+                </button>
+              </div>
 
               <p style={{ marginTop: 16, textAlign: 'center', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(47,80,97,0.4)', lineHeight: 1.6 }}>
                 We respond within 24 hours · No spam · Just a real conversation

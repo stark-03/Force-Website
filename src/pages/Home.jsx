@@ -1,9 +1,20 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeUp, staggerContainer, slideInLeft, slideInRight, scaleUp, wobble } from '../utils/animations';
+import { useOpenCalendly } from '../components/CalendlyModal';
 import heroBanner from '../assets/Hero_Banner.png';
 import screen2_1 from '../assets/Screen2_1.png';
 import screen2_2 from '../assets/Screen2_2.png';
+import ankittPhoto from '../assets/ankitt.png';
+import nidhiPhoto  from '../assets/nidhi.png';
+import careerGuidanceImg from '../assets/CareerGuidance_1.png';
+import hscsImg from '../assets/HSCS_2.png';
+import workshopImg from '../assets/Workshop_1.png';
+
+
+// Teal full-stop accent used throughout headings
+const Dot = () => <span style={{ color: 'var(--coral)' }}>.</span>;
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 const IconCompass = () => (
@@ -26,78 +37,60 @@ const IconSpark = () => (
 
 // ─── Section 1: Hero ─────────────────────────────────────────────────────────
 function Hero() {
+  const openCalendly = useOpenCalendly();
+
   return (
-    <section style={{ position: 'relative', minHeight: '94vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: 'var(--white)' }}>
+      {/* Hero image — visible on the right through the gradient */}
       <div style={{
         position: 'absolute', inset: 0,
         backgroundImage: `url(${heroBanner})`,
         backgroundSize: 'cover', backgroundPosition: 'center right', zIndex: 0,
       }} />
-      {/* Gradient that reveals the image on the right */}
+
+      {/* White gradient — opaque left, transparent right so image shows */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 1,
-        background: 'linear-gradient(to right, rgba(47,80,97,0.96) 0%, rgba(47,80,97,0.80) 40%, rgba(47,80,97,0.22) 70%, transparent 100%)',
+        background: 'linear-gradient(to right, #ffffff 0%, #ffffff 36%, rgba(255,255,255,0.82) 48%, rgba(255,255,255,0.18) 62%, rgba(255,255,255,0) 74%)',
       }} />
 
-      <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1200, margin: '0 auto', padding: '80px 48px' }}>
-        <motion.div initial="hidden" animate="visible" variants={staggerContainer} style={{ maxWidth: 560 }}>
+      <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1200, margin: '0 auto', padding: '120px 48px' }}>
+        <motion.div initial="hidden" animate="visible" variants={staggerContainer} style={{ maxWidth: 620 }}>
 
-          {/* Floating pill badge */}
-          <motion.div variants={fadeUp} style={{
-            display: 'inline-flex', alignItems: 'center', gap: 10,
-            background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.22)', borderRadius: 40,
-            padding: '9px 18px', marginBottom: 32,
-          }}>
-            <span style={{
-              width: 7, height: 7, borderRadius: '50%', background: 'var(--coral)',
-              display: 'inline-block', boxShadow: '0 0 10px rgba(229,127,128,0.9)',
-            }} />
-            <span style={{
-              fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 13,
-              color: 'rgba(255,255,255,0.9)', letterSpacing: '0.09em', textTransform: 'uppercase',
-            }}>Career Development Lab</span>
-          </motion.div>
-
-          {/* H1 — two lines, second in coral */}
+          {/* H1 — first line in misty blue, second in teal */}
           <motion.h1 variants={staggerContainer} style={{
-            fontSize: 'clamp(46px, 6.5vw, 80px)',
-            fontWeight: 900, color: '#fff',
-            marginBottom: 26, lineHeight: 1.06, letterSpacing: '-0.025em',
+            fontSize: 'clamp(52px, 7.2vw, 92px)',
+            fontWeight: 900,
+            marginBottom: 30, lineHeight: 1.04, letterSpacing: '-0.03em',
           }}>
-            <motion.span variants={fadeUp} style={{ display: 'block' }}>Identify your</motion.span>
-            <motion.span variants={fadeUp} style={{ display: 'block', color: 'var(--coral)' }}>child's strengths.</motion.span>
+            <motion.span variants={fadeUp} style={{ display: 'block', color: 'var(--misty-blue)' }}>Identify your child's</motion.span>
+            <motion.span variants={fadeUp} style={{ display: 'block', color: 'var(--teal)' }}>Interests and Strengths<Dot /></motion.span>
           </motion.h1>
 
           <motion.p variants={fadeUp} style={{
-            fontSize: 18, color: 'rgba(255,255,255,0.8)',
-            marginBottom: 40, fontFamily: 'IBM Plex Sans, sans-serif',
-            fontWeight: 400, lineHeight: 1.72, maxWidth: 440,
+            fontSize: 19, color: 'var(--misty-blue)',
+            marginBottom: 44, fontFamily: 'IBM Plex Sans, sans-serif',
+            fontWeight: 400, lineHeight: 1.72, maxWidth: 480, opacity: 0.82,
           }}>
-            Career Development Lab for high-school students to build unique 21st century careers.
+            Career Exploration Lab for high-school students to build unique 21st century careers.
           </motion.p>
 
           {/* CTA pair */}
-          <motion.div variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/forcescholar/lets-connect" target="_blank" rel="noreferrer"
-              className="btn btn-coral" style={{ fontSize: 16, padding: '15px 34px' }}>
-              Get Started →
-            </a>
-            <a href="https://wa.me/918660274897?text=I%20need%20to%20know%20more%20about%20FORCE%20Scholar"
-              target="_blank" rel="noreferrer"
-              style={{
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 15,
-                color: 'rgba(255,255,255,0.78)', borderBottom: '1px solid rgba(255,255,255,0.36)',
-                paddingBottom: 2, textDecoration: 'none', transition: 'color 0.2s',
-              }}>
-              Chat on WhatsApp
-            </a>
+          <motion.div variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <button onClick={openCalendly}
+              className="btn btn-teal" style={{ fontSize: 16, padding: '15px 34px', minWidth: 220, lineHeight: 1 }}>
+              Book a Discovery Call
+            </button>
+            <Link to="/program"
+              className="btn btn-navy" style={{ fontSize: 16, padding: '15px 34px', minWidth: 220, lineHeight: 1, justifyContent: 'center' }}>
+              Explore the Program
+            </Link>
           </motion.div>
 
         </motion.div>
       </div>
 
-      {/* Scroll pulse */}
+      {/* Scroll pulse — navy tones for light background */}
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
@@ -106,8 +99,8 @@ function Hero() {
           zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
         }}
       >
-        <div style={{ width: 1, height: 44, background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.38))' }} />
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.45)' }} />
+        <div style={{ width: 1, height: 44, background: 'linear-gradient(to bottom, transparent, rgba(47,80,97,0.35))' }} />
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(47,80,97,0.4)' }} />
       </motion.div>
 
       <style>{`@media (max-width: 768px) { .hero-inner { padding: 60px 24px !important; } }`}</style>
@@ -119,8 +112,8 @@ function Hero() {
 function StatsBand() {
   const stats = [
     { num: '6-Week', label: 'Structured Journey' },
-    { num: '25+', label: 'Careers Explored' },
-    { num: '1:1', label: 'Mentorship Included' },
+    { num: '30+', label: 'Careers Explored' },
+    { num: '1:1', label: 'Mentorship' },
     { num: '100%', label: 'Live & Online' },
   ];
   return (
@@ -167,11 +160,21 @@ const pillPositions = [
   { top: '8%',  right: '6%' },
   { top: '36%', left: '4%'  },
   { top: '52%', right: '4%' },
-  { bottom: '14%', left: '6%' },
-  { bottom: '7%',  right: '6%' },
+  { bottom: '32%', left: '6%' },
+  { bottom: '30%', right: '6%' },
 ];
 
-function StudentCard({ num, title, quote, img, pills, accentColor, accentBg }) {
+// Each pill floats independently with unique x/y/duration — like bubbles
+const bubbleAnims = [
+  { x: [0, 3, -2, 4, 0],  y: [0, -6, 2, -4, 0],  dur: 3.8 },
+  { x: [0, -4, 2, -3, 0], y: [0,  5, -3, 3,  0],  dur: 4.3 },
+  { x: [0, 2, -4, 1,  0], y: [0, -4, -2, 5,  0],  dur: 3.5 },
+  { x: [0, -3, 4, -2, 0], y: [0,  6,  1, -3, 0],  dur: 4.7 },
+  { x: [0, 5, -2, -4, 0], y: [0, -5,  4,  1, 0],  dur: 3.2 },
+  { x: [0, -4, 3, 5,  0], y: [0,  4, -5,  2, 0],  dur: 4.0 },
+];
+
+function StudentCard({ num, headline, subtitle, quote, img, pills, accentColor, accentBg }) {
   return (
     <motion.div
       whileHover={{ y: -10, boxShadow: '0 24px 72px rgba(47,80,97,0.18)' }}
@@ -186,42 +189,58 @@ function StudentCard({ num, title, quote, img, pills, accentColor, accentBg }) {
       {/* Image with overlays */}
       <div style={{ position: 'relative', height: 370, overflow: 'hidden' }}>
         <motion.img
-          src={img} alt={title}
+          src={img} alt={headline}
           initial={{ opacity: 0, scale: 1.06 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
-        {/* Bottom gradient — only for legibility, not to obscure */}
+
+        {/* Deep bottom gradient so quote is always readable */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%',
-          background: 'linear-gradient(to top, rgba(47,80,97,0.45), transparent)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%',
+          background: 'linear-gradient(to top, rgba(28,50,70,0.88) 0%, rgba(28,50,70,0.5) 55%, transparent 100%)',
+          zIndex: 1,
         }} />
 
-        {/* Floating pills */}
-        {pills.map((p, i) => (
-          <motion.div
-            key={p}
-            variants={wobble}
-            animate="animate"
-            transition={{ delay: i * 0.5 }}
-            style={{
-              position: 'absolute',
-              ...pillPositions[i % pillPositions.length],
-              background: 'rgba(255,255,255,0.94)',
-              border: `1.5px solid ${accentColor}`,
-              color: 'var(--navy)',
-              borderRadius: 5, padding: '5px 14px',
-              fontSize: 12, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-              whiteSpace: 'nowrap', backdropFilter: 'blur(8px)',
-              boxShadow: '0 2px 14px rgba(0,0,0,0.15)', zIndex: 2,
-            }}>{p}</motion.div>
-        ))}
+        {/* Quote overlaid on the image */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          padding: '20px 22px 22px', zIndex: 2,
+        }}>
+          <p style={{
+            fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 700,
+            fontSize: 15, color: '#fff', lineHeight: 1.55,
+            textShadow: '0 1px 4px rgba(0,0,0,0.3)',
+          }}>"{quote}"</p>
+        </div>
+
+        {/* Floating pills — each independent, bubble-like */}
+        {pills.map((p, i) => {
+          const ba = bubbleAnims[i % bubbleAnims.length];
+          return (
+            <motion.div
+              key={p}
+              animate={{ x: ba.x, y: ba.y }}
+              transition={{ duration: ba.dur, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
+              style={{
+                position: 'absolute',
+                ...pillPositions[i % pillPositions.length],
+                background: 'rgba(255,255,255,0.94)',
+                border: `1.5px solid ${accentColor}`,
+                color: 'var(--navy)',
+                borderRadius: 5, padding: '5px 14px',
+                fontSize: 12, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
+                whiteSpace: 'nowrap', backdropFilter: 'blur(8px)',
+                boxShadow: '0 2px 14px rgba(0,0,0,0.15)', zIndex: 3,
+              }}>{p}</motion.div>
+          );
+        })}
       </div>
 
-      {/* Text */}
-      <div style={{ padding: '28px 32px 36px', position: 'relative', overflow: 'hidden' }}>
+      {/* Text — headline + subtitle only, quote is now on the image */}
+      <div style={{ padding: '24px 32px 32px', position: 'relative', overflow: 'hidden' }}>
         {/* Watermark number */}
         <span aria-hidden="true" style={{
           position: 'absolute', right: -8, bottom: -20,
@@ -229,14 +248,19 @@ function StudentCard({ num, title, quote, img, pills, accentColor, accentBg }) {
           color: accentBg, lineHeight: 1, userSelect: 'none', pointerEvents: 'none',
         }}>{num}</span>
 
-        <h3 style={{
-          fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22,
-          color: 'var(--navy)', marginBottom: 14, lineHeight: 1.2, position: 'relative',
-        }}>{title}</h3>
-        <p style={{
-          fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 600,
-          fontSize: 16, color: 'var(--navy)', lineHeight: 1.65, opacity: 0.78, position: 'relative',
-        }}>"{quote}"</p>
+        {/* ALLCAPS label + subtitle */}
+        <h3 style={{ position: 'relative', lineHeight: 1.15 }}>
+          <span style={{
+            display: 'block',
+            fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 26,
+            color: accentColor, letterSpacing: '0.01em',
+          }}>{headline}</span>
+          <span style={{
+            display: 'block',
+            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 15,
+            color: 'var(--navy)', marginTop: 6, opacity: 0.75,
+          }}>{subtitle}</span>
+        </h3>
       </div>
     </motion.div>
   );
@@ -246,34 +270,41 @@ function TwoStudents() {
   return (
     <section className="section" style={{ background: 'var(--white)' }}>
       <div className="container">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 72 }}>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 72 }}>
           <motion.span variants={fadeUp} className="eyebrow">The Career Confusion</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>We see 2 types of students.</motion.h2>
-          <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'var(--black)', maxWidth: 500, margin: '16px auto 0', lineHeight: 1.7, fontFamily: 'IBM Plex Sans, sans-serif', opacity: 0.8 }}>
-            Both share one thing — they need direction, not just information.
-          </motion.p>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>We see 2 types of students<Dot /></motion.h2>
         </motion.div>
 
         <div style={{ display: 'flex', gap: 44, flexWrap: 'wrap', justifyContent: 'center' }}>
           <StudentCard
-            num="01" title="Confused by too many interests."
+            num="01"
+            headline="CONFUSED…"
+            subtitle="Because of too many interests."
             quote="I love design, psychology, climate science and film-making. How do I choose?"
             img={screen2_1} pills={pills1}
             accentColor="var(--teal)" accentBg="rgba(66,151,160,0.06)"
           />
           <StudentCard
-            num="02" title="Clueless because no interest feels clear yet."
+            num="02"
+            headline="CLUELESS…"
+            subtitle="Because no interest feels clear yet."
             quote="I'm good at school but I don't know what I should study further."
             img={screen2_2} pills={pills2}
-            accentColor="var(--coral)" accentBg="rgba(229,127,128,0.06)"
+            accentColor="var(--teal)" accentBg="rgba(66,151,160,0.06)"
           />
         </div>
 
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.5 }} variants={scaleUp} style={{ textAlign: 'center', marginTop: 72 }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.72, y: 32 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.9 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ textAlign: 'center', marginTop: 80 }}
+        >
           <p style={{
             fontFamily: 'Barlow, sans-serif', fontWeight: 900,
-            fontSize: 'clamp(24px, 3vw, 38px)', color: 'var(--teal)', letterSpacing: '-0.01em',
-          }}>Both need direction.</p>
+            fontSize: 'clamp(34px, 4.5vw, 58px)', color: 'var(--teal)', letterSpacing: '-0.02em',
+          }}>Both need direction<Dot /></p>
         </motion.div>
       </div>
     </section>
@@ -285,27 +316,67 @@ function ProblemStatement() {
   return (
     <section style={{ background: '#EEF7F8', padding: '100px 0' }}>
       <div className="container" style={{ textAlign: 'center' }}>
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.4 }} variants={staggerContainer}>
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }}
+          variants={staggerContainer}
+          style={{
+            maxWidth: 780, margin: '0 auto',
+            background: 'rgba(255,255,255,0.72)',
+            borderRadius: 12,
+            padding: 'clamp(48px, 8vw, 80px) clamp(32px, 6vw, 72px)',
+            boxShadow: '0 8px 48px rgba(47,80,97,0.08)',
+          }}
+        >
+          {/* Lead-in text */}
           <motion.p variants={fadeUp} style={{
             fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 20,
-            color: 'var(--navy)', marginBottom: 32, lineHeight: 1.7,
+            color: 'var(--navy)', marginBottom: 36, lineHeight: 1.72, opacity: 0.85,
           }}>
-            After years of school, many students still struggle to answer a simple question:
+            After years of schooling, many students still struggle to<br />answer one simple question:
           </motion.p>
+
+          {/* Playfair Display italic quote — coral, matching the reference */}
           <motion.h2
-            variants={scaleUp}
+            variants={{ hidden: { opacity: 0, scale: 0.75, y: 24 }, visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } } }}
             style={{
-              fontFamily: "'Dancing Script', cursive",
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontStyle: 'italic',
               fontWeight: 700,
-              fontSize: 'clamp(48px, 8vw, 88px)',
+              fontSize: 'clamp(32px, 4.8vw, 62px)',
               color: 'var(--coral)',
               lineHeight: 1.2,
-              marginBottom: 20,
+              marginBottom: 12,
+              whiteSpace: 'nowrap',
             }}
           >
             "What am I good at?"
           </motion.h2>
-          <motion.div variants={fadeUp} style={{ width: 100, height: 4, background: 'var(--coral)', margin: '0 auto', borderRadius: 2 }} />
+
+          {/* Brush-stroke underline SVG */}
+          <motion.div variants={fadeUp} style={{ marginBottom: 40, display: 'flex', justifyContent: 'center' }}>
+            <svg viewBox="0 0 520 22" style={{ width: '72%', maxWidth: 500 }} xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 16 14 C 80 7, 170 18, 260 11 C 350 4, 440 17, 504 10"
+                stroke="var(--coral)" strokeWidth="3.5" fill="none"
+                strokeLinecap="round" strokeLinejoin="round"
+              />
+            </svg>
+          </motion.div>
+
+          {/* Body text below */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 18,
+              color: 'var(--navy)', lineHeight: 1.78, opacity: 0.85,
+            }}
+          >
+            <span style={{ color: 'var(--teal)', fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 19 }}>FORCE</span>
+            {' '}helps students discover their interests, strengths, and learning patterns then turn that self-awareness into confident career choices.
+          </motion.p>
         </motion.div>
       </div>
     </section>
@@ -320,7 +391,7 @@ function CareerExploration() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ maxWidth: 700, margin: '0 auto 56px' }}>
           <motion.span variants={fadeUp} className="eyebrow">Our Approach</motion.span>
           <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: 20 }}>
-            Introducing<br />Career Exploration.
+            Introducing<br />Career Exploration<Dot />
           </motion.h2>
           <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'var(--black)', lineHeight: 1.75, opacity: 0.85 }}>
             A structured program for high-school students to understand who they are, what they are good at, and then turn that self-awareness into making confident career choices.
@@ -332,7 +403,7 @@ function CareerExploration() {
           style={{
             position: 'relative', maxWidth: 820, margin: '0 auto',
             borderRadius: 5, overflow: 'hidden',
-            boxShadow: '0 0 0 4px var(--coral), 0 24px 80px rgba(47,80,97,0.2)',
+            boxShadow: '0 0 0 4px var(--teal), 0 24px 80px rgba(47,80,97,0.2)',
           }}
         >
           <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
@@ -355,17 +426,17 @@ const pillars = [
   {
     icon: <IconCompass />, title: 'Career Guidance', num: '01',
     body: '1:1 mentorship helping students understand their interests, strengths, values, and learning patterns to build meaningful career pathways.',
-    band: 'linear-gradient(135deg, #4297A0 0%, #2e7d86 100%)',
+    img: careerGuidanceImg,
   },
   {
     icon: <IconBook />, title: 'Harvard-style Case Studies', num: '02',
     body: 'Students explore interdisciplinary careers by solving real-world problems across Science, Technology, Engineering, Management, and Humanities/Arts.',
-    band: 'linear-gradient(135deg, #E57F80 0%, #c96a6b 100%)',
+    img: hscsImg,
   },
   {
     icon: <IconSpark />, title: 'AI based Workshops', num: '03',
     body: 'Students develop critical thinking, communication, AI literacy, decision-making, and problem-solving skills through hands-on learning experiences.',
-    band: 'linear-gradient(135deg, #2F5061 0%, #1e3a4a 100%)',
+    img: workshopImg,
   },
 ];
 
@@ -375,7 +446,10 @@ function ThreePillars() {
       <div className="container">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 64 }}>
           <motion.span variants={fadeUp} className="eyebrow">How It Works</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 3.5vw, 48px)' }}>Three pillars. One goal.</motion.h2>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', lineHeight: 1.2 }}>
+            Three pillars<Dot /> One goal<Dot /><br />
+            <span style={{ color: 'var(--teal)', fontSize: 'clamp(22px, 2.8vw, 38px)' }}>Confident Career Choices!</span>
+          </motion.h2>
         </motion.div>
 
         <motion.div
@@ -395,48 +469,44 @@ function ThreePillars() {
                 willChange: 'transform', overflow: 'hidden',
               }}
             >
-              {/* Colored top band */}
-              <div style={{
-                background: p.band, padding: '32px 28px 28px',
-                position: 'relative', overflow: 'hidden',
-              }}>
-                {/* Large ghost number in band */}
-                <span aria-hidden="true" style={{
-                  position: 'absolute', right: -4, bottom: -16,
-                  fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 96,
-                  color: 'rgba(255,255,255,0.12)', lineHeight: 1,
-                  userSelect: 'none', pointerEvents: 'none',
-                }}>{p.num}</span>
-
-                {/* Icon in white-tinted circle */}
+              {/* Photo top — with teal overlay + icon */}
+              <div style={{ position: 'relative', height: 260, overflow: 'hidden' }}>
+                <img
+                  src={p.img} alt={p.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+                {/* Teal gradient overlay */}
                 <div style={{
-                  width: 56, height: 56, borderRadius: 5,
-                  background: 'rgba(255,255,255,0.18)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#fff', marginBottom: 20,
-                }}>{p.icon}</div>
-
-                <p style={{
-                  fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 11,
-                  letterSpacing: '0.12em', textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.65)',
-                }}>{p.num}</p>
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(to bottom, rgba(42,125,134,0.2) 0%, rgba(28,60,80,0.45) 100%)',
+                }} />
+                {/* Number + icon on top */}
+                <div style={{
+                  position: 'absolute', inset: 0, padding: '22px 24px',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+                }}>
+                  <p style={{
+                    fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 11,
+                    letterSpacing: '0.12em', textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.7)', marginBottom: 10,
+                  }}>{p.num}</p>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 5,
+                    background: 'rgba(255,255,255,0.18)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#fff',
+                  }}>{p.icon}</div>
+                </div>
               </div>
 
               {/* White text section */}
-              <div style={{ padding: '28px 28px 36px' }}>
-                <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 21, color: 'var(--navy)', marginBottom: 12, lineHeight: 1.2 }}>{p.title}</h3>
+              <div style={{ padding: '24px 28px 32px' }}>
+                <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 21, color: 'var(--navy)', marginBottom: 10, lineHeight: 1.2 }}>{p.title}</h3>
                 <p style={{ fontSize: 15, color: 'var(--black)', lineHeight: 1.78, opacity: 0.82 }}>{p.body}</p>
               </div>
             </motion.div>
           ))}
         </motion.div>
-
-        <motion.p initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: 56, fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 18, color: 'var(--navy)', opacity: 0.75 }}>
-          Three interconnected pillars, one overarching goal —{' '}
-          <span style={{ color: 'var(--teal)', fontWeight: 800 }}>Confident Career Choices.</span>
-        </motion.p>
       </div>
 
       <style>{`
@@ -449,6 +519,7 @@ function ThreePillars() {
 
 // ─── Section 6A: The New Rule ─────────────────────────────────────────────────
 function NewRule() {
+  const openCalendly = useOpenCalendly();
   return (
     <section style={{ background: 'var(--navy)', padding: '140px 0', position: 'relative', overflow: 'hidden' }}>
       {/* Large watermark word */}
@@ -462,33 +533,32 @@ function NewRule() {
 
       <div className="container" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} variants={staggerContainer}>
-          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>The New Rule</motion.span>
+          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>The Harvard Theory</motion.span>
           <motion.h2
-            variants={{ hidden: { opacity: 0, scale: 0.88 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
+            variants={{ hidden: { opacity: 0, scale: 0.88 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } } }}
             style={{
               fontFamily: 'Barlow, sans-serif', fontWeight: 900,
               fontSize: 'clamp(40px, 7vw, 80px)',
-              color: 'var(--coral)', lineHeight: 1.08, marginBottom: 32,
+              color: 'var(--teal)', lineHeight: 1.08, marginBottom: 32,
             }}
           >
-            Career Exploration<br />runs in parallel to<br />Academics.
+            Career Exploration must run<br />in parallel to Academics<Dot />
           </motion.h2>
           <motion.div variants={fadeUp} style={{ width: 56, height: 3, background: 'var(--teal)', margin: '0 auto 28px', borderRadius: 2 }} />
           <motion.p variants={fadeUp} style={{
             fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 18,
-            color: 'rgba(255,255,255,0.72)', marginBottom: 44,
+            color: 'rgba(255,255,255,0.72)',
             maxWidth: 560, margin: '0 auto 44px',
           }}>
-            Students should not wait until grade 10 to discover who they are.
+            Parents should start career exploration as early as Grade 7, 8, 9…
           </motion.p>
-          <motion.a
+          <motion.button
             variants={scaleUp}
-            href="https://wa.me/918660274897?text=I%20need%20to%20know%20more%20about%20FORCE%20Scholar"
-            target="_blank" rel="noreferrer"
-            className="btn btn-coral" style={{ fontSize: 16 }}
+            onClick={openCalendly}
+            className="btn btn-teal" style={{ fontSize: 16 }}
           >
-            Talk to Us on WhatsApp
-          </motion.a>
+            Schedule your first Discovery Call
+          </motion.button>
         </motion.div>
       </div>
     </section>
@@ -527,8 +597,8 @@ function Testimonials() {
     <section className="section" style={{ background: 'var(--platinum)' }}>
       <div className="container">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 64 }}>
-          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--coral)' }}>Parents Speak</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)', marginBottom: 16 }}>Real Stories. Real Impact.</motion.h2>
+          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>Parents POV</motion.span>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)', marginBottom: 16 }}>Real Stories<Dot /> Real Impact<Dot /></motion.h2>
           <motion.p variants={fadeUp} style={{ fontSize: 16, color: 'var(--black)', maxWidth: 520, margin: '0 auto', fontFamily: 'IBM Plex Sans, sans-serif', opacity: 0.82 }}>
             Parents share how FORCE is helping their children discover clarity, confidence, and direction for the future.
           </motion.p>
@@ -553,31 +623,36 @@ function Testimonials() {
             }}>"Hear from parents about their journey with FORCE."</p>
           </motion.div>
 
-          {/* Quote carousel */}
+          {/* Quote carousel — rolodex flip */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={slideInRight} style={{ paddingTop: 8 }}>
-            <div style={{ overflow: 'hidden' }}>
+            {/* perspective wrapper gives depth to the rotateX flip */}
+            <div style={{ perspective: '1000px' }}>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current}
-                  initial={{ x: direction * 48, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: direction * -48, opacity: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ rotateX: direction * 72, opacity: 0, transformOrigin: 'center center' }}
+                  animate={{ rotateX: 0, opacity: 1 }}
+                  exit={{ rotateX: direction * -72, opacity: 0 }}
+                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                   style={{
                     background: 'var(--white)',
-                    borderLeft: '4px solid var(--coral)',
-                    borderRadius: 5, padding: '40px 40px 36px',
+                    borderLeft: '4px solid var(--teal)',
+                    borderRadius: 5, padding: '44px 44px 40px',
                     boxShadow: 'var(--shadow-hover)',
+                    transformStyle: 'preserve-3d',
+                    backfaceVisibility: 'hidden',
                   }}
                 >
                   <span style={{
                     display: 'block', fontFamily: 'Georgia, serif',
-                    fontSize: 80, lineHeight: 0.65, color: 'var(--coral)',
-                    opacity: 0.18, marginBottom: 20, userSelect: 'none',
+                    fontSize: 80, lineHeight: 0.65, color: 'var(--teal)',
+                    opacity: 0.18, marginBottom: 24, userSelect: 'none',
                   }}>"</span>
                   <p style={{
-                    fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 20,
-                    color: 'var(--navy)', lineHeight: 1.68, marginBottom: 24, fontWeight: 400,
+                    fontFamily: 'Barlow, sans-serif', fontWeight: 800,
+                    fontSize: 'clamp(22px, 2.4vw, 30px)',
+                    color: 'var(--navy)', lineHeight: 1.4, marginBottom: 28,
+                    letterSpacing: '-0.01em',
                   }}>
                     {quotes[current].text}
                   </p>
@@ -595,7 +670,7 @@ function Testimonials() {
                 {quotes.map((_, i) => (
                   <button key={i} onClick={() => go(i)} style={{
                     width: i === current ? 28 : 8, height: 8,
-                    background: i === current ? 'var(--coral)' : 'rgba(47,80,97,0.18)',
+                    background: i === current ? 'var(--teal)' : 'rgba(47,80,97,0.45)',
                     borderRadius: 4, border: 'none', cursor: 'pointer',
                     transition: 'all 0.3s', padding: 0,
                   }} />
@@ -610,13 +685,13 @@ function Testimonials() {
                     onClick={fn}
                     style={{
                       width: 40, height: 40, borderRadius: '50%',
-                      border: '2px solid var(--coral)', background: 'transparent',
-                      color: 'var(--coral)', fontSize: 20, fontWeight: 700,
+                      border: '2px solid var(--teal)', background: 'transparent',
+                      color: 'var(--teal)', fontSize: 20, fontWeight: 700,
                       cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                       transition: 'all 0.2s',
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--coral)'; e.currentTarget.style.color = '#fff'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--coral)'; }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--teal)'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--teal)'; }}
                   >{label}</button>
                 ))}
               </div>
@@ -625,8 +700,8 @@ function Testimonials() {
         </div>
 
         <motion.p initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: 72, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 700, fontSize: 22, color: 'var(--teal)' }}>
-          More than a program. A partnership in your child's future.
+          style={{ textAlign: 'center', marginTop: 72, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 'clamp(28px, 3.2vw, 46px)', color: 'var(--teal)', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
+          More than a program<Dot /> A partnership in your child's future<Dot />
         </motion.p>
       </div>
 
@@ -636,11 +711,16 @@ function Testimonials() {
 }
 
 // ─── Section 7: Co-Founders ───────────────────────────────────────────────────
+// To add real photos: import ankittPhoto from '../assets/ankitt.jpg';
+//                     import nidhiPhoto  from '../assets/nidhi.jpg';
+// Then set photo: ankittPhoto / nidhiPhoto below.
 const founders = [
   {
     name: 'Ankitt Sushilanand',
     initials: 'AS',
-    title: 'Co-Founder | Harvard Graduate School of Education',
+    title: 'Co-founder — FORCE',
+    titleSub: 'Harvard University',
+    photo: ankittPhoto,
     bio: "Ankitt's work sits at the intersection of education, adolescent development, and real-world learning. After beginning his journey in engineering and spending nearly a decade leading global teams across industries in the United States, he shifted his focus toward understanding how young people learn, grow, and make decisions about their future.\n\nHe went on to earn a Master's in Education (M.Ed.) from the Harvard Graduate School of Education, where he focused on learning sciences, mentorship, and adolescent development. At FORCE, Ankitt designs learning experiences that combine career exploration, interdisciplinary thinking, and real-world problem solving.",
     pills: ['Harvard M.Ed.', 'Learning Sciences', 'Adolescent Development', 'Career Exploration', 'Real-World Learning'],
     photoAnim: slideInLeft,
@@ -649,7 +729,9 @@ const founders = [
   {
     name: 'Nidhi Gani',
     initials: 'NG',
-    title: 'Co-Founder | Digital Health & Cybersecurity | Harvard Innovation Labs',
+    title: 'Co-founder — FORCE',
+    titleSub: 'Harvard Innovation Labs | Northeastern University',
+    photo: nidhiPhoto,
     bio: "Nidhi has worked across biotechnology, regulatory affairs, digital health, cybersecurity, and global innovation ecosystems in the United States. Her experience spans Fortune 500 environments, startup ecosystems, and interdisciplinary research spaces.\n\nAs a Professor of Digital Health and Cybersecurity at Northeastern University, she has taught and mentored graduate students. At FORCE, Nidhi helps students understand how real industries work, what future careers demand, and how their interests can connect to meaningful pathways.",
     pills: ['Harvard Innovation Lab', 'Northeastern Faculty', 'Digital Health', 'Innovation Ecosystems', 'Future Careers', 'Interdisciplinary Learning'],
     photoAnim: slideInRight,
@@ -661,30 +743,34 @@ function FounderPhoto({ f }) {
   return (
     <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} variants={f.photoAnim}>
       <div style={{
-        width: '100%', height: 400,
-        background: 'linear-gradient(135deg, var(--navy) 0%, #1e4a6e 55%, var(--teal) 100%)',
-        borderRadius: 5, marginBottom: 22,
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        width: '100%', height: 420,
+        borderRadius: 5, marginBottom: 20,
         position: 'relative', overflow: 'hidden',
+        background: 'linear-gradient(135deg, var(--navy) 0%, #1e4a6e 55%, var(--teal) 100%)',
       }}>
-        {/* Decorative concentric rings */}
-        <div style={{ position: 'absolute', width: 280, height: 280, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.07)' }} />
-        <div style={{ position: 'absolute', width: 190, height: 190, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.11)' }} />
-        <div style={{ position: 'absolute', width: 110, height: 110, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.18)' }} />
-
-        {/* Initials */}
-        <span style={{
-          fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 84,
-          color: 'rgba(255,255,255,0.22)', letterSpacing: '-0.02em', position: 'relative', zIndex: 1,
-        }}>{f.initials}</span>
-        <span style={{
-          fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11,
-          color: 'rgba(255,255,255,0.36)', marginTop: 10,
-          letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative', zIndex: 1,
-        }}>Photo Coming Soon</span>
+        {f.photo ? (
+          <img
+            src={f.photo} alt={f.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+          />
+        ) : (
+          /* Gradient placeholder — replace photo: null with the imported image to activate */
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'absolute', width: 280, height: 280, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.07)', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+            <div style={{ position: 'absolute', width: 190, height: 190, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.11)', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+            <div style={{ position: 'absolute', width: 110, height: 110, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.18)', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+            <span style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 84, color: 'rgba(255,255,255,0.22)', letterSpacing: '-0.02em', position: 'relative' }}>{f.initials}</span>
+            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, color: 'rgba(255,255,255,0.36)', marginTop: 10, letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative' }}>Photo Coming Soon</span>
+          </div>
+        )}
       </div>
-      <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22, color: 'var(--navy)', marginBottom: 6 }}>{f.name}</h3>
-      <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'var(--teal)', fontWeight: 500, lineHeight: 1.5 }}>{f.title}</p>
+
+      {/* Name + two-line title */}
+      <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22, color: 'var(--navy)', marginBottom: 4 }}>{f.name}</h3>
+      <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'var(--teal)', fontWeight: 600, lineHeight: 1.5 }}>{f.title}</p>
+      {f.titleSub && (
+        <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'var(--navy)', fontWeight: 400, opacity: 0.55, marginTop: 3 }}>{f.titleSub}</p>
+      )}
     </motion.div>
   );
 }
@@ -715,7 +801,7 @@ function CoFounders() {
       <div className="container">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 80 }}>
           <motion.span variants={fadeUp} className="eyebrow">The Team</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>The people behind FORCE.</motion.h2>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>The people behind FORCE<Dot /></motion.h2>
         </motion.div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 96 }}>
@@ -745,6 +831,84 @@ function CoFounders() {
   );
 }
 
+// ─── Find Your Force ──────────────────────────────────────────────────────────
+function FindYourForce() {
+  const openCalendly = useOpenCalendly();
+  return (
+    <section style={{ position: 'relative', background: 'var(--teal)', padding: '88px 24px', overflow: 'hidden' }}>
+      {/* Subtle hero image bleed at 12% opacity — same feel as Spikelabs */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        backgroundImage: `url(${heroBanner})`,
+        backgroundSize: 'cover', backgroundPosition: 'center top',
+        opacity: 0.12, zIndex: 0,
+      }} />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 28 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative', zIndex: 1,
+          background: 'var(--white)',
+          borderRadius: 5,
+          maxWidth: 820,
+          margin: '0 auto',
+          padding: 'clamp(52px, 8vw, 96px) clamp(32px, 6vw, 88px)',
+          textAlign: 'center',
+          boxShadow: 'var(--shadow-deep)',
+        }}
+      >
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            fontFamily: 'Barlow, sans-serif', fontWeight: 900,
+            fontSize: 'clamp(34px, 5vw, 62px)',
+            color: 'var(--navy)', marginBottom: 24,
+            lineHeight: 1.1, letterSpacing: '-0.025em',
+          }}
+        >
+          Find Your Force<Dot />
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            fontFamily: 'IBM Plex Sans, sans-serif',
+            fontSize: 18, color: 'var(--black)',
+            lineHeight: 1.8, opacity: 0.78,
+            maxWidth: 600, margin: '0 auto 48px',
+          }}
+        >
+          Most students are asked to choose their future before they have truly explored it. At FORCE, we help students experience real-world careers, understand their strengths, and build the confidence to make decisive career choices. Career clarity does not come from one test — it comes from guided, structured exploration.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.4, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <button
+            onClick={openCalendly}
+            className="btn btn-teal"
+            style={{ fontSize: 16, padding: '16px 44px' }}
+          >
+            Book a Discovery Call
+          </button>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -757,6 +921,7 @@ export default function Home() {
       <NewRule />
       <Testimonials />
       <CoFounders />
+      <FindYourForce />
     </>
   );
 }

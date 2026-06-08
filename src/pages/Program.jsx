@@ -1,52 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeUp, staggerContainer, slideInRight, scaleUp } from '../utils/animations';
+import { useOpenCalendly } from '../components/CalendlyModal';
 
-// ─── SVG Icon Library ─────────────────────────────────────────────────────────
-const IconCalendar = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-    <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-    <line x1="3" y1="10" x2="21" y2="10"/>
-  </svg>
-);
-const IconMentor = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-    <circle cx="12" cy="7" r="4"/>
-    <polyline points="16 11 18 13 22 9"/>
-  </svg>
-);
-const IconGlobe = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="2" y1="12" x2="22" y2="12"/>
-    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-  </svg>
-);
-const IconMonitor = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-    <line x1="8" y1="21" x2="16" y2="21"/>
-    <line x1="12" y1="17" x2="12" y2="21"/>
-  </svg>
-);
-const IconUsers = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-  </svg>
-);
-const IconChart = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10"/>
-    <line x1="12" y1="20" x2="12" y2="4"/>
-    <line x1="6" y1="20" x2="6" y2="14"/>
-    <line x1="2" y1="20" x2="22" y2="20"/>
-  </svg>
-);
+// Contrasting full-stop accent used in headings
+const Dot = () => <span style={{ color: 'var(--coral)' }}>.</span>;
 
 // ─── Stage Icons ──────────────────────────────────────────────────────────────
 const StageIcon1 = () => (
@@ -82,7 +40,13 @@ const StageIcon5 = () => (
 
 // ─── Section 1: Program Hero ──────────────────────────────────────────────────
 function ProgramHero() {
-  const features = ['Career Guidance', 'Harvard-Style Case Studies', 'AI & Future Skills', 'Real-World Projects'];
+  const openCalendly = useOpenCalendly();
+  const features = [
+    'Identify your Career Interests',
+    'Explore 30+ careers through Harvard-style case studies',
+    'Master AI and 21st-century Skills',
+    'Build Interdisciplinary Projects',
+  ];
   return (
     <section style={{ background: 'var(--navy)', padding: '100px 0', position: 'relative', overflow: 'hidden' }}>
       {/* Decorative watermark */}
@@ -101,7 +65,7 @@ function ProgramHero() {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }} className="hero-grid">
 
-          {/* Left — white text on navy */}
+          {/* Left white text on navy */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
             <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>The Program</motion.span>
             <motion.h1 variants={fadeUp} style={{
@@ -110,25 +74,49 @@ function ProgramHero() {
               letterSpacing: '-0.02em',
             }}>
               Career Exploration Lab<br />
-              <span style={{ color: 'var(--coral)' }}>— STEAM-X</span>
+              <span style={{ color: 'var(--teal)' }}>STEAM-X</span>
             </motion.h1>
-            <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'rgba(255,255,255,0.75)', marginBottom: 32, lineHeight: 1.75 }}>
-              A structured 6-week journey that helps students discover their interests, explore interdisciplinary careers, and build future-ready skills through case studies, AI tools, and real-world projects.
+            <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'rgba(255,255,255,0.75)', marginBottom: 36, lineHeight: 1.75 }}>
+              A structured 6-week journey that helps students identify their interests, explore interdisciplinary careers, and build future-ready skills.
             </motion.p>
-            <motion.div variants={staggerContainer} style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 40 }}>
+
+            {/* 2×2 bullet grid Spikelabs layout */}
+            <motion.div
+              variants={staggerContainer}
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 28px', marginBottom: 44 }}
+              className="feature-grid"
+            >
               {features.map(f => (
-                <motion.div key={f} variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span style={{ color: 'var(--teal)', fontWeight: 800, fontSize: 18, lineHeight: 1 }}>✓</span>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 16, color: 'rgba(255,255,255,0.88)' }}>{f}</span>
+                <motion.div key={f} variants={fadeUp} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                  <span style={{
+                    flexShrink: 0,
+                    width: 22, height: 22, borderRadius: '50%',
+                    background: 'var(--teal)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginTop: 2,
+                  }}>
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <polyline points="1.5,6 4.5,9 10.5,3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 15, color: 'rgba(255,255,255,0.88)', lineHeight: 1.5 }}>{f}</span>
                 </motion.div>
               ))}
             </motion.div>
-            <motion.a variants={scaleUp} href="https://calendly.com/forcescholar/lets-connect" target="_blank" rel="noreferrer" className="btn btn-coral" style={{ fontSize: 16 }}>
-              Schedule a Call →
-            </motion.a>
+
+            <motion.p variants={fadeUp} style={{
+              fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15,
+              color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, marginBottom: 36,
+            }}>
+              For students in Grades 7–11 who are ready to explore what they are good at and where their interests can take them.
+            </motion.p>
+
+            <motion.button variants={scaleUp} onClick={openCalendly} className="btn btn-teal" style={{ fontSize: 16 }}>
+              Schedule a Call
+            </motion.button>
           </motion.div>
 
-          {/* Right — white card with teal accent */}
+          {/* Right white card with teal accent */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={slideInRight}
             style={{
               background: 'var(--white)',
@@ -141,7 +129,7 @@ function ProgramHero() {
                 STEAM-X Program
               </p>
               <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, lineHeight: 1.7, color: 'rgba(255,255,255,0.9)' }}>
-                For students in Grades 7–12 who are ready to explore what they are good at and where their interests can take them.
+                For students in Grades 7–11 who are ready to explore what they are good at and where their interests can take them.
               </p>
             </div>
 
@@ -162,112 +150,138 @@ function ProgramHero() {
         </div>
       </div>
 
-      <style>{`@media (max-width: 768px) { .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; } }`}</style>
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .feature-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }
 
 // ─── Section 2: 5 Stages ──────────────────────────────────────────────────────
 const stages = [
-  { num: '01', title: 'Student Assessments', icon: <StageIcon1 />, bullets: ['Identify interests, strengths & values', 'Guided reflection with mentor conversations'] },
-  { num: '02', title: 'Career Exploration', icon: <StageIcon2 />, bullets: ['Explore 25+ interdisciplinary careers', 'Go beyond Science & Tech into Arts & Humanities'] },
-  { num: '03', title: 'Skill Development', icon: <StageIcon3 />, bullets: ['Build critical thinking & AI literacy', 'Collaboration, problem-solving & leadership'] },
-  { num: '04', title: 'Real-World Projects', icon: <StageIcon4 />, bullets: ['Apply learning through case studies', 'Collaborative presentations & activities'] },
-  { num: '05', title: 'Direction & Pathways', icon: <StageIcon5 />, bullets: ['Build clarity on career pathways', 'Connect interests to academic decisions'] },
+  {
+    num: '1.',
+    title: 'Student Assessments',
+    icon: <StageIcon1 />,
+    bullets: [
+      'Identify Interests, Strengths, Values and Learning Style',
+      'Craft a personalized learning plan with guidance from mentor',
+    ],
+  },
+  {
+    num: '2.',
+    title: 'Career Exploration',
+    icon: <StageIcon2 />,
+    bullets: [
+      'Explore 30+ careers through Harvard-style case studies',
+      'Exposure to interdisciplinary careers by solving real-world problems',
+    ],
+  },
+  {
+    num: '3.',
+    title: '21st-century Skill Development',
+    icon: <StageIcon3 />,
+    bullets: [
+      'Build critical thinking and AI Literacy',
+      'Collaborate with peers for professional communication, research, and problem solving skills',
+    ],
+  },
+  {
+    num: '4.',
+    title: 'Interdisciplinary Projects',
+    icon: <StageIcon4 />,
+    bullets: [
+      'Discover new frontier subjects',
+      'Apply learning, use AI to build tools, presentations and solutions',
+    ],
+  },
+  {
+    num: '5.',
+    title: 'Direction & Pathways',
+    icon: <StageIcon5 />,
+    bullets: [
+      'Build clarity on career pathways',
+      'Align career interests to academic decisions',
+    ],
+  },
 ];
 
 function Journey() {
   return (
-    <section style={{ background: 'var(--navy)', padding: '110px 0', position: 'relative', overflow: 'hidden' }}>
-      {/* Large decorative number watermark */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', bottom: -60, left: -30,
-        fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 320,
-        color: 'rgba(255,255,255,0.03)', lineHeight: 1,
-        userSelect: 'none', pointerEvents: 'none', letterSpacing: '-0.05em',
-      }}>05</div>
-
+    <section style={{ background: 'var(--teal)', padding: '110px 0', position: 'relative', overflow: 'hidden' }}>
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '36% 64%', alignItems: 'start' }} className="journey-outer">
+        <div style={{ display: 'grid', gridTemplateColumns: '34% 66%', alignItems: 'start' }} className="journey-outer">
 
-          {/* Sticky left title panel */}
+          {/* Left sticky title panel, no border */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={fadeUp}
-            style={{
-              position: 'sticky', top: 120,
-              paddingRight: 56, paddingBottom: 40,
-              borderRight: '1px solid rgba(255,255,255,0.12)',
-            }}
+            style={{ position: 'sticky', top: 120, paddingRight: 64, paddingBottom: 40 }}
           >
-            {/* Teal accent line */}
-            <div style={{ width: 3, height: 44, background: 'var(--teal)', borderRadius: 2, marginBottom: 24 }} />
-            <span className="eyebrow" style={{ color: 'var(--teal)' }}>The Journey</span>
+            <span className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)' }}>The Journey</span>
             <h2 style={{
               fontFamily: 'Barlow, sans-serif', fontWeight: 900,
-              fontSize: 'clamp(32px, 3.5vw, 52px)', color: 'var(--white)',
-              lineHeight: 1.1, marginBottom: 20,
+              fontSize: 'clamp(32px, 3.5vw, 54px)', color: 'var(--white)',
+              lineHeight: 1.08, marginBottom: 20, letterSpacing: '-0.02em',
             }}>
               5 Stages of the STEAM-X Career Exploration Lab
             </h2>
-            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 16, color: 'rgba(255,255,255,0.55)', lineHeight: 1.72 }}>
+            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.72 }}>
               A structured journey from self-discovery to future direction.
             </p>
           </motion.div>
 
-          {/* Right — 2-top + 3-bottom card grid */}
-          <div style={{ paddingLeft: 0 }}>
-            <div style={{ border: '1px solid rgba(255,255,255,0.14)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }} className="stages-grid">
-                {stages.map((s, i) => {
-                  const col = [1, 2, 1, 2, 3][i];
-                  const row = i < 2 ? 1 : 2;
-                  return (
-                    <motion.div
-                      key={s.num}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: false, amount: 0.15 }}
-                      whileHover={{ background: 'rgba(255,255,255,0.04)' }}
-                      variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: (i % 3) * 0.1, ease: [0.22, 1, 0.36, 1] } } }}
-                      style={{
-                        padding: '36px 28px',
-                        gridColumn: col, gridRow: row,
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        margin: '-0.5px',
-                        minHeight: 230,
-                        display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',
-                        cursor: 'default', transition: 'background 0.25s',
-                      }}
-                    >
-                      {/* Icon in small teal square */}
-                      <div style={{
-                        width: 40, height: 40, borderRadius: 5,
-                        background: 'rgba(66,151,160,0.18)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'var(--teal)', marginBottom: 16, flexShrink: 0,
-                      }}>{s.icon}</div>
+          {/* Right borderless 3-column grid, Spikelabs style */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '52px 36px' }} className="stages-grid">
+            {stages.map((s, i) => (
+              <motion.div
+                key={s.num}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                {/* Big white icon no box, Spikelabs style */}
+                <div style={{ color: 'var(--white)', marginBottom: 20, lineHeight: 1 }}>
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                    {i === 0 && <>
+                      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                      <rect x="9" y="3" width="6" height="4" rx="1"/>
+                      <path d="M9 12l2 2 4-4"/><path d="M9 17h4"/>
+                    </>}
+                    {i === 1 && <>
+                      <circle cx="12" cy="12" r="10"/>
+                      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                    </>}
+                    {i === 2 && <path d="M12 2L9.1 9.1 2 12l7.1 2.9L12 22l2.9-7.1L22 12l-7.1-2.9z"/>}
+                    {i === 3 && <>
+                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/>
+                      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/>
+                    </>}
+                    {i === 4 && <polygon points="3 11 22 2 13 21 11 13 3 11"/>}
+                  </svg>
+                </div>
 
-                      <p style={{
-                        fontFamily: 'Barlow, sans-serif', fontWeight: 900,
-                        fontSize: 12, color: 'var(--coral)', letterSpacing: '0.14em', marginBottom: 7,
-                      }}>{s.num}</p>
-                      <h3 style={{
-                        fontFamily: 'Barlow, sans-serif', fontWeight: 800,
-                        fontSize: 17, color: 'var(--white)', marginBottom: 14, lineHeight: 1.25,
-                      }}>{s.title}</h3>
-                      <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                        {s.bullets.map(b => (
-                          <li key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                            <span style={{ color: 'var(--teal)', fontSize: 13, lineHeight: 1.6, flexShrink: 0 }}>—</span>
-                            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.68)', lineHeight: 1.6 }}>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
+                <h3 style={{
+                  fontFamily: 'Barlow, sans-serif', fontWeight: 800,
+                  fontSize: 20, color: 'var(--white)', marginBottom: 14, lineHeight: 1.2,
+                }}>
+                  {s.num} {s.title}
+                </h3>
+
+                <ul style={{ listStyle: 'disc', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {s.bullets.map(b => (
+                    <li key={b} style={{
+                      fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14,
+                      color: 'rgba(255,255,255,0.78)', lineHeight: 1.65,
+                    }}>{b}</li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
@@ -275,12 +289,15 @@ function Journey() {
       <style>{`
         @media (max-width: 768px) {
           .journey-outer { grid-template-columns: 1fr !important; }
-          .journey-outer > div:first-child { position: static !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.12); padding-right: 0 !important; padding-bottom: 40px; margin-bottom: 8px; }
+          .journey-outer > div:first-child { position: static !important; padding-right: 0 !important; padding-bottom: 40px; }
+          .stages-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 480px) {
           .stages-grid { grid-template-columns: 1fr !important; }
-          .stages-grid > div { grid-column: auto !important; grid-row: auto !important; min-height: auto !important; }
         }
         @media (min-width: 769px) and (max-width: 1024px) {
-          .journey-outer { grid-template-columns: 40% 60% !important; }
+          .journey-outer { grid-template-columns: 38% 62% !important; }
+          .stages-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>
     </section>
@@ -288,90 +305,130 @@ function Journey() {
 }
 
 // ─── Section 3: Program Details ───────────────────────────────────────────────
-// Alternate band colors across the 6 cards for visual rhythm
-const detailBands = [
-  'linear-gradient(135deg, #4297A0 0%, #2e7d86 100%)',
-  'linear-gradient(135deg, #2F5061 0%, #1e3a4a 100%)',
-  'linear-gradient(135deg, #E57F80 0%, #c96a6b 100%)',
-  'linear-gradient(135deg, #2F5061 0%, #1e3a4a 100%)',
-  'linear-gradient(135deg, #4297A0 0%, #2e7d86 100%)',
-  'linear-gradient(135deg, #E57F80 0%, #c96a6b 100%)',
-];
-
 const details = [
-  { icon: <IconCalendar />, num: '01', title: 'Weekly Live Sessions', body: 'Interactive 2–3 hour weekend sessions designed around case studies, discussions, projects, and skill-building activities.' },
-  { icon: <IconMentor />, num: '02', title: '1:1 Mentorship', body: 'Personalized guidance conversations with mentors and educators to help students reflect on their interests, strengths, and next steps.' },
-  { icon: <IconGlobe />, num: '03', title: 'Real-World Learning', body: 'Students learn through case studies, projects, debates, discussions, and interdisciplinary exploration instead of passive lectures.' },
-  { icon: <IconMonitor />, num: '04', title: 'Conducted Online', body: 'Live sessions via Zoom and collaborative digital tools, allowing students to participate from anywhere.' },
-  { icon: <IconUsers />, num: '05', title: 'Small Cohort Model', body: 'Students learn in an interactive community where they can share ideas, ask questions, and receive mentor attention.' },
-  { icon: <IconChart />, num: '06', title: 'Parent Progress Insights', body: "Parents receive meaningful feedback on the student's participation, observed strengths, interest patterns, and recommended next steps." },
+  {
+    title: 'Duration',
+    value: '6 Weeks',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Eligibility',
+    value: 'Grade 7–11',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Learning Mode',
+    value: 'Online Live sessions on Zoom',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+        <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Schedule',
+    value: 'Sat & Sun, 2 hrs each',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Cohort',
+    value: 'Small batch (10–15 max)',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Communication',
+    value: 'Live Zoom Sessions & WhatsApp touchpoints',
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+    ),
+  },
 ];
 
 function ProgramDetails() {
   return (
-    <section className="section" style={{ background: 'var(--platinum)' }}>
+    <section style={{ background: 'var(--white)', padding: '120px 0' }}>
       <div className="container">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 64 }}>
-          <motion.span variants={fadeUp} className="eyebrow">Program Details</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>What's included</motion.h2>
-        </motion.div>
+        {/* Large uppercase heading Spikelabs style */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            fontFamily: 'Barlow, sans-serif', fontWeight: 900,
+            fontSize: 'clamp(28px, 3.2vw, 46px)',
+            color: 'var(--navy)', textTransform: 'uppercase',
+            letterSpacing: '0.02em', marginBottom: 56, textAlign: 'center',
+          }}
+        >
+          Program Details
+        </motion.h2>
 
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.1 }} variants={staggerContainer}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }} className="details-grid">
-          {details.map((d, i) => (
-            <motion.div key={d.title} variants={fadeUp}
-              whileHover={{ y: -10, boxShadow: '0 24px 72px rgba(47,80,97,0.18)' }}
-              transition={{ duration: 0.3 }}
+        {/* 3×2 grey card grid */}
+        <motion.div
+          initial="hidden" whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}
+          className="details-grid"
+        >
+          {details.map((d) => (
+            <motion.div
+              key={d.title}
+              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } } }}
               style={{
-                background: 'var(--white)', borderRadius: 5,
-                boxShadow: 'var(--shadow-card)',
-                willChange: 'transform', overflow: 'hidden',
-              }}>
-
-              {/* Colored top band */}
-              <div style={{
-                background: detailBands[i], padding: '28px 24px 24px',
-                position: 'relative', overflow: 'hidden',
-              }}>
-                <span aria-hidden="true" style={{
-                  position: 'absolute', right: -4, bottom: -16,
-                  fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 80,
-                  color: 'rgba(255,255,255,0.12)', lineHeight: 1,
-                  userSelect: 'none', pointerEvents: 'none',
-                }}>{d.num}</span>
-
-                <div style={{
-                  width: 50, height: 50, borderRadius: 5,
-                  background: 'rgba(255,255,255,0.18)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#fff', marginBottom: 16,
-                }}>{d.icon}</div>
-
-                <p style={{
-                  fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700,
-                  fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.6)',
-                }}>{d.num}</p>
-              </div>
-
-              {/* White text section */}
-              <div style={{ padding: '24px 24px 32px' }}>
-                <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--navy)', marginBottom: 10, lineHeight: 1.2 }}>{d.title}</h3>
-                <p style={{ fontSize: 14, color: 'var(--black)', lineHeight: 1.78, opacity: 0.82 }}>{d.body}</p>
-              </div>
+                background: 'var(--platinum)',
+                padding: '44px 32px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ color: 'var(--navy)', marginBottom: 20 }}>{d.icon}</div>
+              <p style={{
+                fontFamily: 'Barlow, sans-serif', fontWeight: 700,
+                fontSize: 18, color: 'var(--navy)', marginBottom: 8, lineHeight: 1.2,
+              }}>{d.title}</p>
+              <p style={{
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400,
+                fontSize: 15, color: 'rgba(47,80,97,0.65)', lineHeight: 1.6,
+              }}>{d.value}</p>
             </motion.div>
           ))}
         </motion.div>
       </div>
       <style>{`
-        @media (max-width: 768px) { .details-grid { grid-template-columns: 1fr !important; } }
-        @media (min-width: 769px) and (max-width: 1024px) { .details-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 768px) { .details-grid { grid-template-columns: 1fr 1fr !important; } }
+        @media (max-width: 480px) { .details-grid { grid-template-columns: 1fr !important; } }
       `}</style>
     </section>
   );
 }
 
-// ─── Section 4: Is This For My Child? ────────────────────────────────────────
+// ─── Section 4+5: Is This Right For My Child? + Student Voices (combined) ────
 const listItems = [
   'are curious about the future',
   'want exposure to different careers',
@@ -383,7 +440,135 @@ const listItems = [
   'are looking for mentorship, confidence, and direction',
 ];
 
+// Student data (shared between thumb + main player)
+const students = [
+  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074882/Pravartika-Testimonial_k3k9zm.mp4' },
+  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074919/Megh-Testimonial_p17cfy.mp4' },
+  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074911/Tanishka-Testimonial_wg7zbz.mp4' },
+  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074881/Risha-Testimonial_tvbxxh.mp4' },
+];
+
+// Small clickable thumbnail with auto-captured frame
+function StudentThumb({ name, src, active, onClick }) {
+  const [thumb, setThumb] = useState(null);
+  useEffect(() => {
+    const vid = document.createElement('video');
+    vid.muted = true; vid.playsInline = true; vid.preload = 'metadata'; vid.src = src;
+    let done = false;
+    const capture = () => {
+      if (done) return; done = true;
+      const c = document.createElement('canvas');
+      c.width = vid.videoWidth || 320; c.height = vid.videoHeight || 180;
+      try { c.getContext('2d').drawImage(vid, 0, 0, c.width, c.height); setThumb(c.toDataURL('image/jpeg', 0.8)); } catch {}
+      vid.src = '';
+    };
+    vid.addEventListener('loadedmetadata', () => { vid.currentTime = Math.min(1, (vid.duration || 2) * 0.08); });
+    vid.addEventListener('seeked', capture);
+    vid.load();
+    return () => { vid.src = ''; };
+  }, [src]);
+
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1, aspectRatio: '1 / 1.1', borderRadius: 5, overflow: 'hidden', padding: 0, cursor: 'pointer',
+        border: active ? '3px solid var(--teal)' : '3px solid transparent',
+        position: 'relative',
+        background: 'linear-gradient(135deg, var(--navy) 0%, #1e5c6e 100%)',
+        transition: 'border-color 0.2s, transform 0.2s',
+        transform: active ? 'scale(1.06)' : 'scale(1)',
+        boxShadow: active ? '0 0 0 2px rgba(66,151,160,0.35)' : 'none',
+      }}
+    >
+      {thumb && <img src={thumb} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: active ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.42)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end',
+        padding: '0 6px 8px',
+      }}>
+        <span style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 12, color: '#fff', lineHeight: 1, textAlign: 'center' }}>{name}</span>
+      </div>
+    </button>
+  );
+}
+
+// VideoSlide main player used inside the carousel
+function VideoSlide({ name, src, onPlayingChange }) {
+  const [playing, setPlaying] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    setThumbnail(null); setPlaying(false);
+    const vid = document.createElement('video');
+    vid.muted = true; vid.playsInline = true; vid.preload = 'metadata'; vid.src = src;
+    let done = false;
+    const capture = () => {
+      if (done) return; done = true;
+      const canvas = document.createElement('canvas');
+      canvas.width = vid.videoWidth || 640; canvas.height = vid.videoHeight || 360;
+      try { canvas.getContext('2d').drawImage(vid, 0, 0, canvas.width, canvas.height); setThumbnail(canvas.toDataURL('image/jpeg', 0.85)); } catch {}
+      vid.src = '';
+    };
+    vid.addEventListener('loadedmetadata', () => { vid.currentTime = Math.min(1, (vid.duration || 2) * 0.08); });
+    vid.addEventListener('seeked', capture);
+    vid.load();
+    return () => { vid.src = ''; };
+  }, [src]);
+
+  const handlePlay = () => {
+    setPlaying(true); onPlayingChange?.(true);
+    setTimeout(() => { if (videoRef.current) { videoRef.current.currentTime = 0; videoRef.current.play(); } }, 50);
+  };
+
+  return (
+    <div style={{ position: 'relative', background: '#000', aspectRatio: '16/9' }}>
+      {!playing && (
+        <div onClick={handlePlay} style={{
+          position: 'absolute', inset: 0, zIndex: 3, cursor: 'pointer',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          background: thumbnail ? 'transparent' : 'linear-gradient(135deg, var(--navy) 0%, #1e5c6e 50%, var(--teal) 100%)',
+        }}>
+          {thumbnail && (<>
+            <img src={thumbnail} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(28,55,76,0.6)' }} />
+          </>)}
+          <motion.div whileHover={{ scale: 1.12 }} style={{
+            width: 68, height: 68, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.18)', border: '2px solid rgba(255,255,255,0.82)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: 14, position: 'relative', zIndex: 2,
+          }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          </motion.div>
+          <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 18, color: '#fff', position: 'relative', zIndex: 2 }}>{name}</p>
+          <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 3, position: 'relative', zIndex: 2 }}>Student Testimonial · Click to watch</p>
+        </div>
+      )}
+      <video ref={videoRef} src={src} controls playsInline
+        onPause={() => { if (!videoRef.current?.ended) onPlayingChange?.(false); }}
+        onEnded={() => { setPlaying(false); onPlayingChange?.(false); }}
+        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain', background: '#000' }} />
+    </div>
+  );
+}
+
+// Combined: Is This Right For My Child? (left) + Student Voices carousel (right)
 function ForMyChild() {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    if (videoPlaying) return;
+    const t = setInterval(() => { setDirection(1); setCurrent(c => (c + 1) % students.length); }, 6000);
+    return () => clearInterval(t);
+  }, [videoPlaying]);
+
+  const go = (idx) => { setVideoPlaying(false); setDirection(idx > current ? 1 : -1); setCurrent(idx); };
+
   return (
     <section className="section" style={{ background: 'var(--navy)', position: 'relative', overflow: 'hidden' }}>
       {/* Watermark */}
@@ -394,228 +579,75 @@ function ForMyChild() {
         userSelect: 'none', pointerEvents: 'none', letterSpacing: '-0.05em',
       }}>?</div>
 
-      <div className="container" style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center' }}>
-          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>Is This Right For Your Child?</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)', color: 'var(--white)', marginBottom: 48 }}>This is for students who…</motion.h2>
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '52% 48%', gap: '0 72px', alignItems: 'start' }} className="mychild-grid">
 
-          <motion.div variants={staggerContainer} style={{ display: 'flex', flexDirection: 'column', gap: 12, textAlign: 'left' }}>
-            {listItems.map((item, i) => (
-              <motion.div key={item}
-                variants={{ hidden: { opacity: 0, x: -40 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] } } }}
-                style={{ display: 'flex', alignItems: 'center', gap: 16, background: 'rgba(255,255,255,0.06)', borderRadius: 5, padding: '15px 22px' }}>
-                <span style={{ color: 'var(--teal)', fontWeight: 700, fontSize: 16, flexShrink: 0 }}>✓</span>
-                <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 16, color: 'rgba(255,255,255,0.88)' }}>{item}</span>
-              </motion.div>
-            ))}
+          {/* LEFT This is for students who… */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
+            <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>Is This Right For Your Child?</motion.span>
+            <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', color: 'var(--white)', marginBottom: 32 }}>
+              This is for students who…
+            </motion.h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {listItems.map((item, i) => (
+                <motion.div key={item}
+                  initial={{ opacity: 0, x: -36 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.06)', borderRadius: 5, padding: '13px 20px' }}
+                >
+                  <span style={{ color: 'var(--teal)', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>✓</span>
+                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.88)' }}>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              style={{ marginTop: 36, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 19, color: 'var(--teal)', lineHeight: 1.5 }}
+            >
+              They do not need to have everything figured out.<br />They only need curiosity and willingness to explore.
+            </motion.p>
           </motion.div>
 
-          <motion.p variants={fadeUp} style={{ marginTop: 52, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 22, color: 'var(--coral)', lineHeight: 1.45 }}>
-            They do not need to have everything figured out.<br />They only need curiosity and willingness to explore.
-          </motion.p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+          {/* RIGHT Horizontal rolodex video carousel + thumbnail strip */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={slideInRight} style={{ paddingTop: 8 }}>
+            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 14 }}>Student Voices</p>
 
-// ─── Section 5: Student Testimonials ─────────────────────────────────────────
-const students = [
-  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074882/Pravartika-Testimonial_k3k9zm.mp4' },
-  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074919/Megh-Testimonial_p17cfy.mp4' },
-  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074911/Tanishka-Testimonial_wg7zbz.mp4' },
-  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074881/Risha-Testimonial_tvbxxh.mp4' },
-];
+            {/* Main video horizontal rolodex flip (rotateY) */}
+            <div style={{ borderRadius: 5, overflow: 'hidden', boxShadow: 'var(--shadow-deep)', perspective: '1000px', marginBottom: 10 }}>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={current}
+                  initial={{ rotateY: direction * 55, opacity: 0 }}
+                  animate={{ rotateY: 0, opacity: 1 }}
+                  exit={{ rotateY: direction * -55, opacity: 0 }}
+                  transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
+                >
+                  <VideoSlide name={students[current].name} src={students[current].src} onPlayingChange={setVideoPlaying} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-function VideoSlide({ name, src, onPlayingChange }) {
-  const [playing, setPlaying] = useState(false);
-  const [thumbnail, setThumbnail] = useState(null);
-  const videoRef = useRef(null);
-
-  // Capture the first meaningful frame as thumbnail via a hidden video element
-  useEffect(() => {
-    setThumbnail(null);
-    setPlaying(false);
-
-    const vid = document.createElement('video');
-    vid.muted = true;
-    vid.playsInline = true;
-    vid.preload = 'metadata';
-    vid.src = src;
-    let done = false;
-
-    const capture = () => {
-      if (done) return;
-      done = true;
-      const canvas = document.createElement('canvas');
-      canvas.width = vid.videoWidth || 640;
-      canvas.height = vid.videoHeight || 360;
-      try {
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
-        setThumbnail(canvas.toDataURL('image/jpeg', 0.85));
-      } catch {
-        // Canvas tainted by security policy — gradient fallback stays
-      }
-      vid.src = '';
-    };
-
-    vid.addEventListener('loadedmetadata', () => {
-      // Seek to 8% of duration (max 1s) to skip black opening frames
-      vid.currentTime = Math.min(1, (vid.duration || 2) * 0.08);
-    });
-    vid.addEventListener('seeked', capture);
-    vid.load();
-
-    return () => { vid.src = ''; };
-  }, [src]);
-
-  const handlePlay = () => {
-    setPlaying(true);
-    onPlayingChange?.(true);
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.currentTime = 0;
-        videoRef.current.play();
-      }
-    }, 50);
-  };
-
-  const handlePause = () => {
-    if (!videoRef.current?.ended) onPlayingChange?.(false);
-  };
-  const handleEnded = () => {
-    setPlaying(false);
-    onPlayingChange?.(false);
-  };
-
-  return (
-    <div style={{ position: 'relative', background: '#000', aspectRatio: '16/9' }}>
-      {!playing && (
-        <div onClick={handlePlay} style={{
-          position: 'absolute', inset: 0, zIndex: 3, cursor: 'pointer',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          // Show gradient until real thumbnail is ready
-          background: thumbnail ? 'transparent' : 'linear-gradient(135deg, var(--navy) 0%, #1e5c6e 50%, var(--teal) 100%)',
-        }}>
-          {/* Real video frame — shown once captured */}
-          {thumbnail && (
-            <>
-              <img src={thumbnail} alt="" style={{
-                position: 'absolute', inset: 0, width: '100%', height: '100%',
-                objectFit: 'cover', display: 'block',
-              }} />
-              {/* Dark scrim so play button and name are always legible */}
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(28,55,76,0.60)' }} />
-            </>
-          )}
-
-          {/* Play button */}
-          <motion.div whileHover={{ scale: 1.12 }} style={{
-            width: 76, height: 76, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.18)',
-            border: '2px solid rgba(255,255,255,0.82)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 20, position: 'relative', zIndex: 2,
-          }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
-              <polygon points="6 3 20 12 6 21 6 3"/>
-            </svg>
+            {/* Thumbnail strip click to switch */}
+            <div style={{ display: 'flex', gap: 8 }}>
+              {students.map((s, i) => (
+                <StudentThumb key={s.name} name={s.name} src={s.src} active={i === current} onClick={() => go(i)} />
+              ))}
+            </div>
           </motion.div>
-
-          <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22, color: '#fff', position: 'relative', zIndex: 2 }}>{name}</p>
-          <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 4, position: 'relative', zIndex: 2 }}>
-            Student Testimonial · Click to watch
-          </p>
-        </div>
-      )}
-      <video ref={videoRef} src={src} controls playsInline
-        onPause={handlePause}
-        onEnded={handleEnded}
-        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain', background: '#000' }} />
-    </div>
-  );
-}
-
-function StudentTestimonials() {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-
-  // Auto-advance is suspended while a video is actively playing
-  useEffect(() => {
-    if (videoPlaying) return;
-    const t = setInterval(() => { setDirection(1); setCurrent(c => (c + 1) % students.length); }, 6000);
-    return () => clearInterval(t);
-  }, [videoPlaying]);
-
-  const go = (idx) => {
-    setVideoPlaying(false); // navigating away always stops the playing state
-    setDirection(idx > current ? 1 : -1);
-    setCurrent(idx);
-  };
-  const prev = () => go((current - 1 + students.length) % students.length);
-  const next = () => go((current + 1) % students.length);
-
-  const ArrowBtn = ({ onClick, children, side }) => (
-    <button onClick={onClick} style={{
-      position: 'absolute', top: '40%', transform: 'translateY(-50%)',
-      [side]: -60,
-      background: 'var(--white)', border: '2px solid var(--teal)',
-      color: 'var(--teal)', borderRadius: '50%',
-      width: 48, height: 48, fontSize: 22, fontWeight: 700, cursor: 'pointer',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      zIndex: 10, transition: 'all 0.2s', boxShadow: 'var(--shadow-card)',
-    }}
-    onMouseEnter={e => { e.currentTarget.style.background = 'var(--teal)'; e.currentTarget.style.color = '#fff'; }}
-    onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.color = 'var(--teal)'; }}
-    >{children}</button>
-  );
-
-  return (
-    <section className="section" style={{ background: 'var(--platinum)' }}>
-      <div className="container">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 56 }}>
-          <motion.span variants={fadeUp} className="eyebrow">Student Voices</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>Hear from students.</motion.h2>
-        </motion.div>
-
-        <div style={{ position: 'relative', maxWidth: 780, margin: '0 auto' }}>
-          <ArrowBtn onClick={prev} side="left">‹</ArrowBtn>
-          <ArrowBtn onClick={next} side="right">›</ArrowBtn>
-
-          <div style={{ overflow: 'hidden', borderRadius: 5, boxShadow: 'var(--shadow-deep)' }}>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={current}
-                initial={{ opacity: 0, x: direction * 60 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction * -60 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <VideoSlide name={students[current].name} src={students[current].src} onPlayingChange={setVideoPlaying} />
-                <div style={{ background: 'var(--navy)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div>
-                    <p style={{ color: 'var(--white)', fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 17 }}>{students[current].name}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.48)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, marginTop: 2 }}>Student Testimonial</p>
-                  </div>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.32)' }}>{current + 1} / {students.length}</span>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 20 }}>
-            {students.map((_, i) => (
-              <button key={i} onClick={() => go(i)} style={{
-                width: i === current ? 28 : 8, height: 8, borderRadius: 4, border: 'none', cursor: 'pointer',
-                background: i === current ? 'var(--teal)' : 'rgba(47,80,97,0.22)',
-                transition: 'all 0.3s', padding: 0,
-              }} />
-            ))}
-          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .mychild-grid { grid-template-columns: 1fr !important; gap: 48px 0 !important; }
+        }
+      `}</style>
     </section>
   );
 }
@@ -637,8 +669,8 @@ function Outcomes() {
     <section className="section" style={{ background: 'var(--white)' }}>
       <div className="container">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 56 }}>
-          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--coral)' }}>Outcomes</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>What students gain<br />by the end of the lab.</motion.h2>
+          <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>Outcomes</motion.span>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>Students succeed in the<br />Lab with…<Dot /></motion.h2>
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}
@@ -683,7 +715,7 @@ function Topics() {
           style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 40 }}>
           {topics.map((t, i) => (
             <motion.span key={t}
-              variants={{ hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] } } }}
+              variants={{ hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] } } }}
               whileHover={{ scale: 1.06, background: 'var(--navy)', color: 'var(--white)' }}
               style={{
                 background: 'var(--teal)', color: 'var(--white)', borderRadius: 5,
@@ -697,7 +729,7 @@ function Topics() {
 
         <motion.p initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
           style={{ fontSize: 16, color: 'var(--navy)', maxWidth: 560, margin: '0 auto', opacity: 0.8 }}>
-          Each topic opens up multiple career pathways — helping students expand their career vocabulary beyond the usual options.
+          Each topic opens up multiple career pathways helping students expand their career vocabulary beyond the usual options.
         </motion.p>
       </div>
     </section>
@@ -706,20 +738,20 @@ function Topics() {
 
 // ─── Section 8: FAQ ───────────────────────────────────────────────────────────
 const faqs = [
-  { q: 'What is the FORCE STEAM-X Career Exploration Lab?', a: 'A 6-week live online career exploration program that helps students in grades 7–12 discover their interests, explore interdisciplinary careers, and build future-ready skills through case studies, AI tools, and real-world projects.' },
-  { q: 'Who is this program for?', a: 'Grades 8–12 students who are curious, confused, or multi-interested — students who want direction, exposure to different careers, and a structured way to explore what they are good at.' },
+  { q: 'What is the FORCE STEAM-X Career Exploration Lab?', a: 'A 6-week live online career exploration program that helps students in grades 7–11 discover their interests, explore interdisciplinary careers, and build future-ready skills through case studies, AI tools, and real-world projects.' },
+  { q: 'Who is this program for?', a: 'Grades 7–11 students who are curious, confused, or multi-interested students who want direction, exposure to different careers, and a structured way to explore what they are good at.' },
   { q: 'Is this only for students interested in science and technology?', a: 'No. STEAM-X includes science and technology but also design, business, humanities, media, sustainability, psychology, entrepreneurship, AI, and more. It is built for students with any kind of interest.' },
-  { q: 'How is this different from regular career counselling?', a: 'Regular counselling begins with a test. FORCE begins with experiences. Students explore, engage, and reflect — building self-awareness through doing, not just answering questionnaires.' },
+  { q: 'How is this different from regular career counselling?', a: 'Regular counselling begins with a test. FORCE begins with experiences. Students explore, engage, and reflect building self-awareness through doing, not just answering questionnaires.' },
   { q: 'What will students do during the program?', a: 'Live online sessions including case studies, group discussions, AI-based activities, project work, presentations, and mentor feedback.' },
   { q: 'What kinds of topics and careers will students explore?', a: 'Climate change, AI, sustainability, biotechnology, astronomy, media literacy, economics, entrepreneurship, geopolitics, arts, culture, and many more interdisciplinary fields.' },
   { q: 'Will students learn AI tools?', a: 'Yes. Students use AI for brainstorming, research, feedback, idea development, and project work. We also teach responsible AI use and how to distinguish human thinking from AI output.' },
-  { q: 'What skills will my child build?', a: 'Communication, critical thinking, collaboration, creativity, problem-solving, leadership, digital literacy, and media literacy — all built through hands-on activities.' },
+  { q: 'What skills will my child build?', a: 'Communication, critical thinking, collaboration, creativity, problem-solving, leadership, digital literacy, and media literacy all built through hands-on activities.' },
   { q: 'What outcomes can parents expect after 6 weeks?', a: 'Clearer understanding of interests and strengths, exposure to multiple future-facing careers, AI tool experience, improved communication, and greater confidence in talking about their future.' },
   { q: 'Will my child receive a report or feedback?', a: 'Yes. Parents receive meaningful feedback on participation, observed strengths, interest patterns, and recommended next steps at the end of the program.' },
   { q: 'Is there homework or work outside the live sessions?', a: 'Short reflection tasks, research prompts, AI activities, or project work. The workload is designed to be manageable alongside school commitments.' },
   { q: 'How much time will my child need to commit?', a: '3–5 hours per week, including live sessions and light independent work. Sessions are scheduled on weekends to avoid interfering with school.' },
   { q: 'What are the expectations from students?', a: 'Attend on time, participate actively, respect others, complete assignments, and maintain academic honesty throughout the program.' },
-  { q: 'What is the program fee?', a: '₹[Insert Fee]. This includes live sessions, case studies, AI activities, project work, feedback, and parent-facing progress insights. Limited scholarships or instalment options may be available.' },
+  { q: 'What is the program fee?', a: 'FORCE is designed to be an affordable, high-value alternative to traditional career counseling with a much deeper learning experience built in. The fee includes live sessions, Harvard-style case studies, AI activities, project work, mentor feedback, and parent-facing progress insights. Once we understand your child\'s grade, goals, and support needs, our team will share the most suitable program fee and available payment options. Limited scholarships may be available for eligible families.' },
   { q: 'What happens after the 6-week program ends?', a: 'Students can continue with deeper career guidance, personalized mentoring, project development, portfolio-building, or long-term career roadmap planning with FORCE.' },
 ];
 
@@ -764,7 +796,7 @@ function FAQItem({ q, a }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{ overflow: 'hidden' }}>
             <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'var(--black)', lineHeight: 1.78, paddingBottom: 22, paddingRight: 32, opacity: 0.85 }}>{a}</p>
           </motion.div>
@@ -780,7 +812,7 @@ function FAQ() {
       <div className="container" style={{ maxWidth: 800, margin: '0 auto' }}>
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 56 }}>
           <motion.span variants={fadeUp} className="eyebrow">Frequently Asked Questions</motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>Questions parents ask.</motion.h2>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>Questions parents ask<Dot /></motion.h2>
         </motion.div>
         <div>{faqs.map(f => <FAQItem key={f.q} {...f} />)}</div>
       </div>
@@ -811,8 +843,8 @@ function FinalCTA() {
             <br /><br />
             Book a conversation with the FORCE team to understand whether the STEAM-X Career Exploration Lab is the right fit for your child.
           </motion.p>
-          <motion.a variants={scaleUp} href="https://calendly.com/forcescholar/lets-connect" target="_blank" rel="noreferrer" className="btn btn-coral" style={{ fontSize: 17 }}>
-            Book a Free Conversation →
+          <motion.a variants={scaleUp} href="https://calendly.com/forcescholar/lets-connect" target="_blank" rel="noreferrer" className="btn btn-teal" style={{ fontSize: 17 }}>
+            Book a Discovery Call
           </motion.a>
         </motion.div>
       </div>
@@ -825,11 +857,11 @@ export default function Program() {
     <>
       <ProgramHero />
       <Journey />
+      <Topics />
       <ProgramDetails />
       <ForMyChild />
-      <StudentTestimonials />
+      {/* <StudentTestimonials /> */}
       <Outcomes />
-      <Topics />
       <FAQ />
       <FinalCTA />
     </>

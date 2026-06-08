@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 export default function WhatsAppCTA() {
   return (
     <motion.a
-      href="https://wa.me/918660274897?text=I%20need%20to%20know%20more%20about%20FORCE%20Scholar"
+      href="https://wa.me/918660274897?text=I%20want%20to%20identify%20my%20child's%20interests%20and%20strengths"
       target="_blank"
       rel="noreferrer"
       aria-label="Chat on WhatsApp"
