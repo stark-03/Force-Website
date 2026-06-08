@@ -59,7 +59,7 @@ function Hero() {
 
           {/* H1 — first line in misty blue, second in teal */}
           <motion.h1 variants={staggerContainer} style={{
-            fontSize: 'clamp(52px, 7.2vw, 92px)',
+            fontSize: 'clamp(40px, 5.6vw, 72px)',
             fontWeight: 900,
             marginBottom: 30, lineHeight: 1.04, letterSpacing: '-0.03em',
           }}>

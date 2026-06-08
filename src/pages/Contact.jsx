@@ -81,38 +81,41 @@ const contactMethods = [
   },
 ];
 
+// ─── Paste your deployed Apps Script Web App URL here ────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzwqWpSAuMEipfImftJU9qyjH06Z36tn4AsAIMGdN8BndolK7OORxOGknrO9AwIwxQ/exec';
+
 export default function Contact() {
   const formRef = useRef(null);
   const [form, setForm] = useState({
     name: '', email: '', countryCode: '+91', phone: '', grade: '', message: '',
   });
+  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const isValid = () => formRef.current && formRef.current.reportValidity();
-
-  const buildMessage = () => [
-    "Hello, I want to identify my child's interests and strengths.",
-    `Name: ${form.name}`,
-    `Email: ${form.email}`,
-    `Phone: ${form.countryCode} ${form.phone}`,
-    `Child's Grade: ${form.grade}`,
-    form.message ? `Message: ${form.message}` : null,
-  ].filter(Boolean).join('\n');
-
-  const handleWhatsApp = () => {
-    if (!isValid()) return;
-    window.open(
-      `https://wa.me/918660274897?text=${encodeURIComponent(buildMessage())}`,
-      '_blank'
-    );
-  };
-
-  const handleEmail = () => {
-    if (!isValid()) return;
-    const subject = encodeURIComponent('Enquiry — FORCE Scholar');
-    const body = encodeURIComponent(buildMessage());
-    window.open(`mailto:hello@forcescholar.com?subject=${subject}&body=${body}`, '_blank');
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if (!formRef.current.reportValidity()) return;
+    setStatus('submitting');
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          name: form.name,
+          email: form.email,
+          phone: `${form.countryCode} ${form.phone}`,
+          grade: form.grade,
+          message: form.message,
+        }),
+      });
+      setStatus('success');
+      setForm({ name: '', email: '', countryCode: '+91', phone: '', grade: '', message: '' });
+    } catch {
+      setStatus('error');
+    }
   };
 
   const inputBase = {
@@ -272,21 +275,51 @@ export default function Contact() {
                   onFocus={onFocus} onBlur={onBlur} />
               </div>
 
-              <div style={{ height: 1, background: 'rgba(47,80,97,0.08)', marginBottom: 20 }} />
+              <div style={{ height: 1, background: 'rgba(47,80,97,0.08)', marginBottom: 24 }} />
 
-              {/* Two submit buttons */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }} className="form-row">
-                <button type="button" onClick={handleWhatsApp} className="btn btn-teal" style={{ justifyContent: 'center', fontSize: 15, padding: '15px 20px' }}>
-                  Send via WhatsApp →
-                </button>
-                <button type="button" onClick={handleEmail} className="btn btn-navy" style={{ justifyContent: 'center', fontSize: 15, padding: '15px 20px' }}>
-                  Send via Email →
-                </button>
-              </div>
+              {/* Success state */}
+              {status === 'success' ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+                  style={{ textAlign: 'center', padding: '28px 20px', background: 'rgba(66,151,160,0.07)', borderRadius: 5, border: '1.5px solid rgba(66,151,160,0.25)' }}
+                >
+                  <div style={{ fontSize: 36, marginBottom: 12 }}>✅</div>
+                  <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 20, color: 'var(--teal)', marginBottom: 6 }}>
+                    Message received!
+                  </p>
+                  <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'var(--navy)', opacity: 0.7, lineHeight: 1.6 }}>
+                    We'll get back to you within 24 hours. Keep an eye on your inbox.
+                  </p>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    style={{ marginTop: 18, fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'var(--teal)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Send another message
+                  </button>
+                </motion.div>
+              ) : (
+                <>
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    disabled={status === 'submitting'}
+                    className="btn btn-teal"
+                    style={{ width: '100%', justifyContent: 'center', fontSize: 16, padding: '16px 24px', opacity: status === 'submitting' ? 0.7 : 1, cursor: status === 'submitting' ? 'not-allowed' : 'pointer' }}
+                  >
+                    {status === 'submitting' ? 'Sending…' : 'Submit →'}
+                  </button>
 
-              <p style={{ marginTop: 16, textAlign: 'center', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(47,80,97,0.4)', lineHeight: 1.6 }}>
-                We respond within 24 hours · No spam · Just a real conversation
-              </p>
+                  {status === 'error' && (
+                    <p style={{ marginTop: 12, textAlign: 'center', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: '#d4183d' }}>
+                      Something went wrong. Please try again or reach out on WhatsApp.
+                    </p>
+                  )}
+
+                  <p style={{ marginTop: 16, textAlign: 'center', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13, color: 'rgba(47,80,97,0.4)', lineHeight: 1.6 }}>
+                    We respond within 24 hours · No spam · Just a real conversation
+                  </p>
+                </>
+              )}
             </form>
           </motion.div>
 
