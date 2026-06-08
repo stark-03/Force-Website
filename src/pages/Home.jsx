@@ -887,7 +887,7 @@ function FindYourForce() {
             maxWidth: 600, margin: '0 auto 48px',
           }}
         >
-          Most students are asked to choose their future before they have truly explored it. At FORCE, we help students experience real-world careers, understand their strengths, and build the confidence to make decisive career choices. Career clarity does not come from one test — it comes from guided, structured exploration.
+          Most students are asked to choose their future before they have truly explored it. At FORCE, we help students experience real-world careers, understand their strengths, and build the confidence to make decisive career choices. Career clarity does not come from one test it comes from guided, structured exploration.
         </motion.p>
 
         <motion.div
