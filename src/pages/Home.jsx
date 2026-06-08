@@ -51,7 +51,7 @@ function Hero() {
       {/* White gradient — opaque left, transparent right so image shows */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 1,
-        background: 'linear-gradient(to right, #ffffff 0%, #ffffff 36%, rgba(255,255,255,0.82) 48%, rgba(255,255,255,0.18) 62%, rgba(255,255,255,0) 74%)',
+        background: 'linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 32%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.12) 68%, rgba(255,255,255,0) 80%)',
       }} />
 
       <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1200, margin: '0 auto', padding: '120px 48px' }}>
