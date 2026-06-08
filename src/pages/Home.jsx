@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fadeUp, staggerContainer, slideInLeft, slideInRight, scaleUp, wobble } from '../utils/animations';
+import { fadeUp, staggerContainer, slideInLeft, slideInRight, scaleUp } from '../utils/animations';
 import { useOpenCalendly } from '../components/CalendlyModal';
 import heroBanner from '../assets/Hero_Banner.png';
 import screen2_1 from '../assets/Screen2_1.png';
