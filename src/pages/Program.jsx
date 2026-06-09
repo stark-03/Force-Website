@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fadeUp, staggerContainer, slideInRight, scaleUp } from '../utils/animations';
+import { fadeUp, staggerContainer, scaleUp, slideInRight } from '../utils/animations';
 import { useOpenCalendly } from '../components/CalendlyModal';
 
 // Contrasting full-stop accent used in headings
@@ -48,114 +48,64 @@ function ProgramHero() {
     'Build Interdisciplinary Projects',
   ];
   return (
-    <section style={{ background: 'var(--navy)', padding: '100px 0', position: 'relative', overflow: 'hidden' }}>
-      {/* Decorative watermark */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        fontFamily: 'Barlow, sans-serif', fontWeight: 900,
-        fontSize: 'clamp(120px, 18vw, 260px)',
-        color: 'rgba(255,255,255,0.025)', lineHeight: 1, whiteSpace: 'nowrap',
-        userSelect: 'none', pointerEvents: 'none', letterSpacing: '-0.04em',
-      }}>STEAM-X</div>
+    <section style={{ background: 'var(--white)', padding: '64px 0 56px' }}>
+      <div className="container" style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
 
-      {/* Decorative circles */}
-      <div style={{ position: 'absolute', right: -100, top: -100, width: 360, height: 360, borderRadius: '50%', border: '1px solid rgba(66,151,160,0.12)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', right: -50, top: -50, width: 210, height: 210, borderRadius: '50%', border: '1px solid rgba(66,151,160,0.18)', pointerEvents: 'none' }} />
+          {/* Large uppercase heading — exact Spikelab style */}
+          <motion.h1 variants={fadeUp} style={{
+            fontFamily: 'Barlow, sans-serif', fontWeight: 700,
+            fontSize: 'clamp(32px, 4.8vw, 68px)',
+            color: 'var(--navy)', lineHeight: 1.02,
+            letterSpacing: '-0.02em', textTransform: 'uppercase',
+            marginBottom: 28,
+          }}>
+            Career Exploration Lab<br />
+            <span style={{ color: 'var(--teal)' }}>STEAM-X</span>
+          </motion.h1>
 
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }} className="hero-grid">
+          {/* Centered body text */}
+          <motion.p variants={fadeUp} style={{
+            fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 18,
+            color: 'var(--black)', lineHeight: 1.75, opacity: 0.75,
+            maxWidth: 620, margin: '0 auto 52px',
+          }}>
+            A structured 6-week journey that helps students identify their interests, explore interdisciplinary careers, and build future-ready skills.
+          </motion.p>
 
-          {/* Left white text on navy */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
-            <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>The Program</motion.span>
-            <motion.h1 variants={fadeUp} style={{
-              fontSize: 'clamp(32px, 3.8vw, 52px)', fontWeight: 900,
-              color: 'var(--white)', marginBottom: 20, lineHeight: 1.08,
-              letterSpacing: '-0.02em',
-            }}>
-              Career Exploration Lab<br />
-              <span style={{ color: 'var(--teal)' }}>STEAM-X</span>
-            </motion.h1>
-            <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'rgba(255,255,255,0.75)', marginBottom: 36, lineHeight: 1.75 }}>
-              A structured 6-week journey that helps students identify their interests, explore interdisciplinary careers, and build future-ready skills.
-            </motion.p>
+          {/* Full-width teal divider — exact Spikelab */}
+          <motion.div
+            variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
+            style={{ height: 3, background: 'var(--teal)', borderRadius: 2, marginBottom: 56, transformOrigin: 'left center' }}
+          />
 
-            {/* 2×2 bullet grid Spikelabs layout */}
-            <motion.div
-              variants={staggerContainer}
-              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 28px', marginBottom: 44 }}
-              className="feature-grid"
-            >
-              {features.map(f => (
-                <motion.div key={f} variants={fadeUp} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                  <span style={{
-                    flexShrink: 0,
-                    width: 22, height: 22, borderRadius: '50%',
-                    background: 'var(--teal)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginTop: 2,
-                  }}>
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                      <polyline points="1.5,6 4.5,9 10.5,3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 15, color: 'rgba(255,255,255,0.88)', lineHeight: 1.5 }}>{f}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <motion.p variants={fadeUp} style={{
-              fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15,
-              color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, marginBottom: 36,
-            }}>
-              For students in Grades 7–11 who are ready to explore what they are good at and where their interests can take them.
-            </motion.p>
-
-            <motion.button variants={scaleUp} onClick={openCalendly} className="btn btn-teal" style={{ fontSize: 16 }}>
-              Schedule a Call
-            </motion.button>
+          {/* 2×2 feature grid — Spikelab triangle icon style */}
+          <motion.div
+            variants={staggerContainer}
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '28px 48px', textAlign: 'left', marginBottom: 56 }}
+            className="feature-grid"
+          >
+            {features.map(f => (
+              <motion.div key={f} variants={fadeUp} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                {/* Spikelab-style flag/triangle icon in teal */}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--teal)" style={{ flexShrink: 0, marginTop: 2 }}>
+                  <polygon points="3,3 21,3 13,21" opacity="0.25"/>
+                  <polygon points="3,3 21,3 13,21" fill="none" stroke="var(--teal)" strokeWidth="1.6" strokeLinejoin="round"/>
+                  <polyline points="7,10 12,4 17,10" fill="none" stroke="var(--teal)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, fontSize: 16, color: 'var(--navy)', lineHeight: 1.55 }}>{f}</span>
+              </motion.div>
+            ))}
           </motion.div>
 
-          {/* Right white card with teal accent */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={slideInRight}
-            style={{
-              background: 'var(--white)',
-              borderRadius: 5, overflow: 'hidden',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.25)',
-            }}>
-            {/* Teal top band */}
-            <div style={{ background: 'linear-gradient(135deg, var(--teal) 0%, #2e7d86 100%)', padding: '28px 36px' }}>
-              <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 8 }}>
-                STEAM-X Program
-              </p>
-              <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, lineHeight: 1.7, color: 'rgba(255,255,255,0.9)' }}>
-                For students in Grades 7–11 who are ready to explore what they are good at and where their interests can take them.
-              </p>
-            </div>
-
-            {/* Stats rows */}
-            <div style={{ padding: '8px 36px 36px' }}>
-              {[['6 Weeks', 'Structured journey'], ['Live Online', 'Weekend sessions'], ['Small Cohort', 'Personal attention'], ['1:1 Mentorship', 'Guided growth']].map(([title, sub], i) => (
-                <div key={title} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '18px 0',
-                  borderBottom: i < 3 ? '1px solid rgba(47,80,97,0.08)' : 'none',
-                }}>
-                  <span style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 18, color: 'var(--navy)' }}>{title}</span>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'rgba(47,80,97,0.5)' }}>{sub}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+          {/* CTA */}
+          <motion.button variants={scaleUp} onClick={openCalendly} className="btn btn-teal" style={{ fontSize: 16, padding: '15px 40px' }}>
+            Schedule a Call
+          </motion.button>
+        </motion.div>
       </div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .feature-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      <style>{`@media (max-width: 640px) { .feature-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
@@ -211,7 +161,7 @@ const stages = [
 
 function Journey() {
   return (
-    <section style={{ background: 'var(--teal)', padding: '110px 0', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ background: 'var(--teal)', padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: '34% 66%', alignItems: 'start' }} className="journey-outer">
 
@@ -370,7 +320,7 @@ const details = [
 
 function ProgramDetails() {
   return (
-    <section style={{ background: 'var(--white)', padding: '120px 0' }}>
+    <section style={{ background: 'var(--white)', padding: '72px 0' }}>
       <div className="container">
         {/* Large uppercase heading Spikelabs style */}
         <motion.h2
@@ -430,14 +380,11 @@ function ProgramDetails() {
 
 // ─── Section 4+5: Is This Right For My Child? + Student Voices (combined) ────
 const listItems = [
-  'are curious about the future',
+  'feel confused about their careers',
   'want exposure to different careers',
-  'feel confused about what to pursue',
   'have many interests but no clear direction',
+  'are curious about the future',
   'want to build real-world skills',
-  'enjoy interdisciplinary learning',
-  'want to learn how to use AI meaningfully',
-  'are looking for mentorship, confidence, and direction',
 ];
 
 // Student data (shared between thumb + main player)
@@ -584,7 +531,6 @@ function ForMyChild() {
 
           {/* LEFT This is for students who… */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
-            <motion.span variants={fadeUp} className="eyebrow" style={{ color: 'var(--teal)' }}>Is This Right For Your Child?</motion.span>
             <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', color: 'var(--white)', marginBottom: 32 }}>
               This is for students who…
             </motion.h2>
@@ -674,17 +620,33 @@ function Outcomes() {
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }} className="outcomes-grid">
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }} className="outcomes-grid">
           {outcomes.map(o => (
             <motion.div key={o} variants={fadeUp}
-              whileHover={{ y: -4, boxShadow: 'var(--shadow-hover)' }}
+              whileHover={{ y: -6, boxShadow: '0 20px 60px rgba(47,80,97,0.16)' }}
               style={{
-                display: 'flex', alignItems: 'flex-start', gap: 12,
-                background: 'var(--platinum)', borderRadius: 5, padding: '18px 20px',
-                borderLeft: '3px solid var(--teal)',
+                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                background: 'var(--white)', borderRadius: 5, padding: '32px 28px 28px',
+                borderTop: '4px solid var(--teal)',
+                boxShadow: '0 4px 24px rgba(47,80,97,0.09)',
+                minHeight: 160,
               }}>
-              <span style={{ color: 'var(--teal)', fontWeight: 800, fontSize: 18, flexShrink: 0, lineHeight: 1.3 }}>✓</span>
-              <span style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 600, fontSize: 15, color: 'var(--navy)', lineHeight: 1.45 }}>{o}</span>
+              {/* Text — main player */}
+              <span style={{
+                fontFamily: 'Barlow, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(16px, 1.4vw, 20px)',
+                color: 'var(--navy)', lineHeight: 1.35, flex: 1,
+              }}>{o}</span>
+              {/* Teal checkmark badge at bottom */}
+              <div style={{
+                marginTop: 20, width: 32, height: 32, borderRadius: '50%',
+                background: 'var(--teal)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <polyline points="2,7 5.5,10.5 12,3.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
             </motion.div>
           ))}
         </motion.div>

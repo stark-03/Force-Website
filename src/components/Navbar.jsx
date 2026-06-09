@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../assets/Logo.png';
+import logo from '../assets/new-logo.png';
 import { useOpenCalendly } from './CalendlyModal';
 
 // Individual nav link with animated underline — Spikelabs style
@@ -101,11 +101,11 @@ export default function Navbar() {
       >
         <div
           className="container"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 112 }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 112, overflow: 'hidden' }}
         >
           {/* Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={logo} alt="FORCE Scholar" style={{ height: 100, width: 'auto', display: 'block' }} />
+            <img src={logo} alt="FORCE Scholar" className="nav-logo" style={{ height: 230, width: 'auto', display: 'block' }} />
           </Link>
 
           {/* Desktop links + CTA */}
@@ -118,7 +118,7 @@ export default function Navbar() {
             <button
               onClick={openCalendly}
               className="btn btn-teal"
-              style={{ padding: '10px 22px', fontSize: 14 }}
+              style={{ padding: '13px 28px', fontSize: 16 }}
             >
               Schedule a Call
             </button>
@@ -178,6 +178,7 @@ export default function Navbar() {
           @media (max-width: 768px) {
             .nav-desktop { display: none !important; }
             .nav-hamburger { display: block !important; }
+            .nav-logo { height: 120px !important; }
           }
         `}</style>
       </motion.nav>
