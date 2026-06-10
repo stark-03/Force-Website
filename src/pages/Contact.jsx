@@ -190,10 +190,7 @@ export default function Contact() {
                 <div style={{ width: 52, height: 52, borderRadius: 5, background: m.accentBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: m.accent, marginBottom: 20 }}>{m.icon}</div>
                 <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: m.accent, marginBottom: 8 }}>{m.tag}</p>
                 <h3 style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 22, color: 'var(--navy)', marginBottom: 12, lineHeight: 1.2 }}>{m.title}</h3>
-                <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'var(--black)', lineHeight: 1.72, marginBottom: 20, opacity: 0.8, flexGrow: 1 }}>{m.desc}</p>
-                <div style={{ display: 'inline-flex', alignItems: 'center', background: m.accentBg, borderRadius: 5, padding: '6px 12px', marginBottom: 24, alignSelf: 'flex-start' }}>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 13, color: m.accent }}>{m.detail}</span>
-                </div>
+                <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'var(--black)', lineHeight: 1.72, marginBottom: 24, opacity: 0.8, flexGrow: 1 }}>{m.desc}</p>
                 <a href={m.href} target="_blank" rel="noreferrer" className={`btn ${m.btnClass}`} style={{ alignSelf: 'flex-start', fontSize: 14, padding: '11px 22px' }}>
                   {m.cta} →
                 </a>

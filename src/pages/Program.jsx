@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fadeUp, staggerContainer, scaleUp, slideInRight } from '../utils/animations';
+import { fadeUp, staggerContainer, scaleUp } from '../utils/animations';
 import { useOpenCalendly } from '../components/CalendlyModal';
+import thumbRisha      from '../assets/RishaTestimonialPhoto.png';
+import thumbPravartika from '../assets/PravartikaTestimonialPhoto.jpeg';
+import thumbTanishka   from '../assets/TanishkaTestimonialPhoto.jpeg';
+import thumbMegh       from '../assets/MeghtestimonialPhoto.jpeg';
 
 // Contrasting full-stop accent used in headings
 const Dot = () => <span style={{ color: 'var(--coral)' }}>.</span>;
@@ -389,136 +393,67 @@ const listItems = [
 
 // Student data (shared between thumb + main player)
 const students = [
-  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074882/Pravartika-Testimonial_k3k9zm.mp4' },
-  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074919/Megh-Testimonial_p17cfy.mp4' },
-  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074911/Tanishka-Testimonial_wg7zbz.mp4' },
-  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1780074881/Risha-Testimonial_tvbxxh.mp4' },
+  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Pravarthika_studentTestimonial_kj5a4w.mp4', poster: thumbPravartika },
+  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075794/Megh_studentTestimonial_x3hvui.mp4',         poster: thumbMegh       },
+  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075793/Tanishka_studentTestimonial_xmzdfr.mp4',      poster: thumbTanishka   },
+  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Risha_studentTestimonial_cjk3pm.mp4',         poster: thumbRisha      },
 ];
 
-// Small clickable thumbnail with auto-captured frame
-function StudentThumb({ name, src, active, onClick }) {
-  const [thumb, setThumb] = useState(null);
-  useEffect(() => {
-    const vid = document.createElement('video');
-    vid.muted = true; vid.playsInline = true; vid.preload = 'metadata'; vid.src = src;
-    let done = false;
-    const capture = () => {
-      if (done) return; done = true;
-      const c = document.createElement('canvas');
-      c.width = vid.videoWidth || 320; c.height = vid.videoHeight || 180;
-      try { c.getContext('2d').drawImage(vid, 0, 0, c.width, c.height); setThumb(c.toDataURL('image/jpeg', 0.8)); } catch {}
-      vid.src = '';
-    };
-    vid.addEventListener('loadedmetadata', () => { vid.currentTime = Math.min(1, (vid.duration || 2) * 0.08); });
-    vid.addEventListener('seeked', capture);
-    vid.load();
-    return () => { vid.src = ''; };
-  }, [src]);
-
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        flex: 1, aspectRatio: '1 / 1.1', borderRadius: 5, overflow: 'hidden', padding: 0, cursor: 'pointer',
-        border: active ? '3px solid var(--teal)' : '3px solid transparent',
-        position: 'relative',
-        background: 'linear-gradient(135deg, var(--navy) 0%, #1e5c6e 100%)',
-        transition: 'border-color 0.2s, transform 0.2s',
-        transform: active ? 'scale(1.06)' : 'scale(1)',
-        boxShadow: active ? '0 0 0 2px rgba(66,151,160,0.35)' : 'none',
-      }}
-    >
-      {thumb && <img src={thumb} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: active ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.42)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end',
-        padding: '0 6px 8px',
-      }}>
-        <span style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 12, color: '#fff', lineHeight: 1, textAlign: 'center' }}>{name}</span>
-      </div>
-    </button>
-  );
-}
-
-// VideoSlide main player used inside the carousel
-function VideoSlide({ name, src, onPlayingChange }) {
+// Portrait video card — matches the 4-up reference design
+function StudentCard({ name, src, poster }) {
   const [playing, setPlaying] = useState(false);
-  const [thumbnail, setThumbnail] = useState(null);
   const videoRef = useRef(null);
 
-  useEffect(() => {
-    setThumbnail(null); setPlaying(false);
-    const vid = document.createElement('video');
-    vid.muted = true; vid.playsInline = true; vid.preload = 'metadata'; vid.src = src;
-    let done = false;
-    const capture = () => {
-      if (done) return; done = true;
-      const canvas = document.createElement('canvas');
-      canvas.width = vid.videoWidth || 640; canvas.height = vid.videoHeight || 360;
-      try { canvas.getContext('2d').drawImage(vid, 0, 0, canvas.width, canvas.height); setThumbnail(canvas.toDataURL('image/jpeg', 0.85)); } catch {}
-      vid.src = '';
-    };
-    vid.addEventListener('loadedmetadata', () => { vid.currentTime = Math.min(1, (vid.duration || 2) * 0.08); });
-    vid.addEventListener('seeked', capture);
-    vid.load();
-    return () => { vid.src = ''; };
-  }, [src]);
-
   const handlePlay = () => {
-    setPlaying(true); onPlayingChange?.(true);
+    setPlaying(true);
     setTimeout(() => { if (videoRef.current) { videoRef.current.currentTime = 0; videoRef.current.play(); } }, 50);
   };
 
   return (
-    <div style={{ position: 'relative', background: '#000', aspectRatio: '16/9' }}>
-      {!playing && (
-        <div onClick={handlePlay} style={{
-          position: 'absolute', inset: 0, zIndex: 3, cursor: 'pointer',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          background: thumbnail ? 'transparent' : 'linear-gradient(135deg, var(--navy) 0%, #1e5c6e 50%, var(--teal) 100%)',
-        }}>
-          {thumbnail && (<>
-            <img src={thumbnail} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(28,55,76,0.6)' }} />
-          </>)}
-          <motion.div whileHover={{ scale: 1.12 }} style={{
-            width: 68, height: 68, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.18)', border: '2px solid rgba(255,255,255,0.82)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 14, position: 'relative', zIndex: 2,
-          }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+    <motion.div
+      variants={fadeUp}
+      style={{ position: 'relative', aspectRatio: '3/4', borderRadius: 20, overflow: 'hidden', background: '#111', flexShrink: 0 }}
+    >
+      {!playing ? (
+        <div onClick={handlePlay} style={{ position: 'absolute', inset: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* Poster */}
+          <img src={poster} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          {/* Subtle dark gradient at bottom */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.08) 45%, transparent 100%)' }} />
+          {/* Play button */}
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            style={{
+              position: 'relative', zIndex: 2,
+              width: 60, height: 60, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.92)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="6 3 20 12 6 21 6 3"/></svg>
           </motion.div>
-          <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 800, fontSize: 18, color: '#fff', position: 'relative', zIndex: 2 }}>{name}</p>
-          <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 3, position: 'relative', zIndex: 2 }}>Student Testimonial · Click to watch</p>
+          {/* Name overlay bottom-left */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, padding: '0 18px 18px' }}>
+            <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 16, color: '#fff', lineHeight: 1.2, marginBottom: 2 }}>{name}</p>
+            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.72)' }}>Student Testimonial</p>
+          </div>
         </div>
+      ) : (
+        <video
+          ref={videoRef} src={src} controls playsInline poster={poster}
+          onEnded={() => setPlaying(false)}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', background: '#000' }}
+        />
       )}
-      <video ref={videoRef} src={src} controls playsInline
-        onPause={() => { if (!videoRef.current?.ended) onPlayingChange?.(false); }}
-        onEnded={() => { setPlaying(false); onPlayingChange?.(false); }}
-        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain', background: '#000' }} />
-    </div>
+    </motion.div>
   );
 }
 
-// Combined: Is This Right For My Child? (left) + Student Voices carousel (right)
+// Section 4: Is This Right For My Child?
 function ForMyChild() {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-
-  useEffect(() => {
-    if (videoPlaying) return;
-    const t = setInterval(() => { setDirection(1); setCurrent(c => (c + 1) % students.length); }, 6000);
-    return () => clearInterval(t);
-  }, [videoPlaying]);
-
-  const go = (idx) => { setVideoPlaying(false); setDirection(idx > current ? 1 : -1); setCurrent(idx); };
-
   return (
     <section className="section" style={{ background: 'var(--navy)', position: 'relative', overflow: 'hidden' }}>
-      {/* Watermark */}
       <div aria-hidden="true" style={{
         position: 'absolute', top: '50%', right: -60, transform: 'translateY(-50%)',
         fontFamily: 'Barlow, sans-serif', fontWeight: 900, fontSize: 300,
@@ -526,72 +461,66 @@ function ForMyChild() {
         userSelect: 'none', pointerEvents: 'none', letterSpacing: '-0.05em',
       }}>?</div>
 
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '52% 48%', gap: '0 72px', alignItems: 'start' }} className="mychild-grid">
+      <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: 720 }}>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', color: 'var(--white)', marginBottom: 32 }}>
+            This is for students who…
+          </motion.h2>
 
-          {/* LEFT This is for students who… */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer}>
-            <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', color: 'var(--white)', marginBottom: 32 }}>
-              This is for students who…
-            </motion.h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {listItems.map((item, i) => (
+              <motion.div key={item}
+                initial={{ opacity: 0, x: -36 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.45, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.06)', borderRadius: 5, padding: '13px 20px' }}
+              >
+                <span style={{ color: 'var(--teal)', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>✓</span>
+                <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.88)' }}>{item}</span>
+              </motion.div>
+            ))}
+          </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {listItems.map((item, i) => (
-                <motion.div key={item}
-                  initial={{ opacity: 0, x: -36 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.45, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.06)', borderRadius: 5, padding: '13px 20px' }}
-                >
-                  <span style={{ color: 'var(--teal)', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>✓</span>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.88)' }}>{item}</span>
-                </motion.div>
-              ))}
-            </div>
+          <motion.p
+            variants={fadeUp}
+            style={{ marginTop: 36, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 19, color: 'var(--white)', lineHeight: 1.5 }}
+          >
+            Students need not have everything figured out.<br />They only need curiosity and willingness to explore.
+          </motion.p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
-            <motion.p
-              initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              style={{ marginTop: 36, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 19, color: 'var(--teal)', lineHeight: 1.5 }}
-            >
-              They do not need to have everything figured out.<br />They only need curiosity and willingness to explore.
-            </motion.p>
-          </motion.div>
+// Section 5: Student Voices — 4-column portrait grid
+function StudentVoices() {
+  return (
+    <section className="section" style={{ background: 'var(--platinum)' }}>
+      <div className="container">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ textAlign: 'center', marginBottom: 48 }}>
+          <motion.span variants={fadeUp} className="eyebrow">Student Voices</motion.span>
+          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(26px, 3.5vw, 44px)' }}>Hear from students.</motion.h2>
+        </motion.div>
 
-          {/* RIGHT Horizontal rolodex video carousel + thumbnail strip */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={slideInRight} style={{ paddingTop: 8 }}>
-            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 14 }}>Student Voices</p>
-
-            {/* Main video horizontal rolodex flip (rotateY) */}
-            <div style={{ borderRadius: 5, overflow: 'hidden', boxShadow: 'var(--shadow-deep)', perspective: '1000px', marginBottom: 10 }}>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={current}
-                  initial={{ rotateY: direction * 55, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction * -55, opacity: 0 }}
-                  transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
-                >
-                  <VideoSlide name={students[current].name} src={students[current].src} onPlayingChange={setVideoPlaying} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Thumbnail strip click to switch */}
-            <div style={{ display: 'flex', gap: 8 }}>
-              {students.map((s, i) => (
-                <StudentThumb key={s.name} name={s.name} src={s.src} active={i === current} onClick={() => go(i)} />
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.15 }} variants={staggerContainer}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}
+          className="student-voices-grid"
+        >
+          {students.map(s => (
+            <StudentCard key={s.name} name={s.name} src={s.src} poster={s.poster} />
+          ))}
+        </motion.div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
-          .mychild-grid { grid-template-columns: 1fr !important; gap: 48px 0 !important; }
+          .student-voices-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .student-voices-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
@@ -625,28 +554,15 @@ function Outcomes() {
             <motion.div key={o} variants={fadeUp}
               whileHover={{ y: -6, boxShadow: '0 20px 60px rgba(47,80,97,0.16)' }}
               style={{
-                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                background: 'var(--white)', borderRadius: 5, padding: '32px 28px 28px',
+                background: 'var(--white)', borderRadius: 5, padding: '32px 28px',
                 borderTop: '4px solid var(--teal)',
                 boxShadow: '0 4px 24px rgba(47,80,97,0.09)',
-                minHeight: 160,
               }}>
-              {/* Text — main player */}
               <span style={{
                 fontFamily: 'Barlow, sans-serif', fontWeight: 800,
-                fontSize: 'clamp(16px, 1.4vw, 20px)',
-                color: 'var(--navy)', lineHeight: 1.35, flex: 1,
+                fontSize: 'clamp(18px, 1.6vw, 23px)',
+                color: 'var(--navy)', lineHeight: 1.35,
               }}>{o}</span>
-              {/* Teal checkmark badge at bottom */}
-              <div style={{
-                marginTop: 20, width: 32, height: 32, borderRadius: '50%',
-                background: 'var(--teal)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <polyline points="2,7 5.5,10.5 12,3.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -669,7 +585,7 @@ function Topics() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} variants={staggerContainer} style={{ marginBottom: 48 }}>
           <motion.span variants={fadeUp} className="eyebrow">What Students Explore</motion.span>
           <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 4vw, 44px)', marginBottom: 16 }}>
-            Students explore future-facing themes<br />and careers across disciplines.
+            Students explore interdisciplinary careers across disciplines.
           </motion.h2>
         </motion.div>
 
@@ -822,7 +738,7 @@ export default function Program() {
       <Topics />
       <ProgramDetails />
       <ForMyChild />
-      {/* <StudentTestimonials /> */}
+      <StudentVoices />
       <Outcomes />
       <FAQ />
       <FinalCTA />

@@ -548,7 +548,7 @@ function NewRule() {
             color: 'rgba(255,255,255,0.72)',
             maxWidth: 560, margin: '0 auto 44px',
           }}>
-            Parents should start career exploration as early as Grade 7, 8, 9…
+            Parents must start career exploration as early as Grade 7, 8, 9…
           </motion.p>
           <motion.button
             variants={scaleUp}
