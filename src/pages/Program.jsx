@@ -393,14 +393,14 @@ const listItems = [
 
 // Student data (shared between thumb + main player)
 const students = [
-  { name: 'Pravartika', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Pravarthika_studentTestimonial_kj5a4w.mp4', poster: thumbPravartika },
-  { name: 'Megh',       src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075794/Megh_studentTestimonial_x3hvui.mp4',         poster: thumbMegh       },
-  { name: 'Tanishka',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075793/Tanishka_studentTestimonial_xmzdfr.mp4',      poster: thumbTanishka   },
-  { name: 'Risha',      src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Risha_studentTestimonial_cjk3pm.mp4',         poster: thumbRisha      },
+  { name: 'Pravartika', detail: 'Grade 8 ICSE · Bangalore', src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Pravarthika_studentTestimonial_kj5a4w.mp4', poster: thumbPravartika },
+  { name: 'Megh',       detail: 'Grade 10 ICSE · Mumbai',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075794/Megh_studentTestimonial_x3hvui.mp4',         poster: thumbMegh       },
+  { name: 'Tanishka',   detail: 'Grade 9 CBSE · Belgaum',   src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075793/Tanishka_studentTestimonial_xmzdfr.mp4',      poster: thumbTanishka   },
+  { name: 'Risha',      detail: 'Grade 8 IGCSE · Dubai',    src: 'https://res.cloudinary.com/dsdhu8q1k/video/upload/v1781075791/Risha_studentTestimonial_cjk3pm.mp4',         poster: thumbRisha      },
 ];
 
 // Portrait video card — matches the 4-up reference design
-function StudentCard({ name, src, poster }) {
+function StudentCard({ name, detail, src, poster }) {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
 
@@ -436,7 +436,7 @@ function StudentCard({ name, src, poster }) {
           {/* Name overlay bottom-left */}
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, padding: '0 18px 18px' }}>
             <p style={{ fontFamily: 'Barlow, sans-serif', fontWeight: 700, fontSize: 16, color: '#fff', lineHeight: 1.2, marginBottom: 2 }}>{name}</p>
-            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.72)' }}>Student Testimonial</p>
+            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.72)' }}>{detail}</p>
           </div>
         </div>
       ) : (
@@ -482,13 +482,25 @@ function ForMyChild() {
             ))}
           </div>
 
-          <motion.p
-            variants={fadeUp}
-            style={{ marginTop: 36, fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 19, color: 'var(--white)', lineHeight: 1.5 }}
-          >
-            Students need not have everything figured out.<br />They only need curiosity and willingness to explore.
-          </motion.p>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Strip between ForMyChild and StudentVoices
+function ForMyChildStrip() {
+  return (
+    <section style={{ background: 'var(--teal)', padding: '64px 0', textAlign: 'center' }}>
+      <div className="container">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.6 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{ fontFamily: 'Barlow, sans-serif', fontStyle: 'italic', fontWeight: 800, fontSize: 'clamp(20px, 2.4vw, 30px)', color: 'var(--white)', lineHeight: 1.55 }}
+        >
+          Students need not have everything figured out<span style={{ color: 'var(--coral)' }}>.</span><br />
+          They only need curiosity and willingness to explore<span style={{ color: 'var(--coral)' }}>.</span>
+        </motion.p>
       </div>
     </section>
   );
@@ -510,7 +522,7 @@ function StudentVoices() {
           className="student-voices-grid"
         >
           {students.map(s => (
-            <StudentCard key={s.name} name={s.name} src={s.src} poster={s.poster} />
+            <StudentCard key={s.name} name={s.name} detail={s.detail} src={s.src} poster={s.poster} />
           ))}
         </motion.div>
       </div>
@@ -738,6 +750,7 @@ export default function Program() {
       <Topics />
       <ProgramDetails />
       <ForMyChild />
+      <ForMyChildStrip />
       <StudentVoices />
       <Outcomes />
       <FAQ />
