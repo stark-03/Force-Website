@@ -96,8 +96,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', padding: '20px 0', textAlign: 'center' }}>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', padding: '20px 0', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
           <p style={{ fontSize: 13, opacity: 0.7 }}>© 2026 FORCE Scholar. All rights reserved.</p>
+          <p style={{ fontSize: 13, opacity: 0.7 }}>
+            Designed and Developed by{' '}
+            <a href="https://cubiccode.in/" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Cubiccode</a>
+          </p>
         </div>
       </div>
 
