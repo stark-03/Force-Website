@@ -306,7 +306,7 @@ export default function Contact() {
                     className="btn btn-teal"
                     style={{ width: '100%', justifyContent: 'center', fontSize: 16, padding: '16px 24px', opacity: status === 'submitting' ? 0.7 : 1, cursor: status === 'submitting' ? 'not-allowed' : 'pointer' }}
                   >
-                    {status === 'submitting' ? 'Sending…' : 'Submit →'}
+                    {status === 'submitting' ? 'Sending…' : 'Submit'}
                   </button>
 
                   {status === 'error' && (
