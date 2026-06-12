@@ -97,11 +97,12 @@ function Hero() {
             height: 520px;
           }
           .hero-gradient {
-            background: linear-gradient(to bottom, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.40) 55%, rgba(255,255,255,0.10) 100%) !important;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.00) 100%) !important;
           }
           .hero-section > div:last-of-type {
             padding: 48px 24px !important;
           }
+          .hero-section > div:last-of-type p { color: #ffffff !important; opacity: 1 !important; }
           .hero-section .btn {
             min-width: unset !important;
             width: 100%;
