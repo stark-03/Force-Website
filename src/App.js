@@ -1,13 +1,10 @@
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppCTA from './components/WhatsAppCTA';
 import { CalendlyProvider } from './components/CalendlyModal';
-import Home from './pages/Home';
-import Program from './pages/Program';
-import Contact from './pages/Contact';
 import {
   TermsAndConditions,
   PrivacyPolicy,
@@ -17,6 +14,10 @@ import {
   ChildSafetyPolicy,
 } from './pages/Legal';
 import './index.css';
+
+const Home    = lazy(() => import('./pages/Home'));
+const Program = lazy(() => import('./pages/Program'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 const pageVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -35,17 +36,19 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <motion.div key={location.pathname} variants={pageVariants} initial="hidden" animate="visible" exit="exit">
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/program" element={<Program />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/legal/terms" element={<TermsAndConditions />} />
-          <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-          <Route path="/legal/refund" element={<RefundPolicy />} />
-          <Route path="/legal/participation" element={<ParticipationAgreement />} />
-          <Route path="/legal/conduct" element={<StudentConductPolicy />} />
-          <Route path="/legal/child-safety" element={<ChildSafetyPolicy />} />
-        </Routes>
+        <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/program" element={<Program />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/legal/terms" element={<TermsAndConditions />} />
+            <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+            <Route path="/legal/refund" element={<RefundPolicy />} />
+            <Route path="/legal/participation" element={<ParticipationAgreement />} />
+            <Route path="/legal/conduct" element={<StudentConductPolicy />} />
+            <Route path="/legal/child-safety" element={<ChildSafetyPolicy />} />
+          </Routes>
+        </Suspense>
       </motion.div>
     </AnimatePresence>
   );

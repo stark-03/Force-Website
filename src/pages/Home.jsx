@@ -97,7 +97,7 @@ function Hero() {
             height: 520px;
           }
           .hero-gradient {
-            background: linear-gradient(to bottom, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 50%, rgba(255,255,255,0.30) 100%) !important;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.40) 55%, rgba(255,255,255,0.10) 100%) !important;
           }
           .hero-section > div:last-of-type {
             padding: 48px 24px !important;
